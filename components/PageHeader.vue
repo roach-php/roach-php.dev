@@ -1,0 +1,42 @@
+<template>
+  <div class="bg-white">
+    <header
+      class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between"
+    >
+      <NuxtLink to="/" class="mr-4">
+        <RoachLogo />
+      </NuxtLink>
+
+      <div class="flex items-center">
+        <SearchInput />
+
+        <nav class="space-x-2 ml-8">
+          <HeaderNavLink v-for="link in links" :key="link.to" :link="link" />
+        </nav>
+      </div>
+    </header>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+import { HeaderNavLink as NavLink } from "./HeaderNavLink.vue";
+
+export default Vue.extend({
+  data() {
+    return {
+      links: [
+        {
+          label: "Docs",
+          to: "/docs",
+        },
+        {
+          label: "Github",
+          to: "#",
+          external: true,
+        },
+      ] as NavLink[],
+    };
+  },
+});
+</script>

@@ -1,12 +1,12 @@
 <template>
-  <main class="pt-8 mx-auto max-w-6xl px-4 flex">
+  <main class="pt-8 mx-auto max-w-7xl px-4 flex">
     <div
       class="hidden md:block w-52 pt-2.5 sticky top-4 self-start flex-shrink-0"
     >
       <SidebarNavigation />
     </div>
 
-    <div class="md:pl-12 lg:px-12 border-b border-gray-200 pb-24 overflow-auto">
+    <div class="md:pl-12 lg:px-12 overflow-auto w-full">
       <div class="pb-24 border-b border-200">
         <div class="pb-8 mb-8 border-b border-gray-200">
           <div>

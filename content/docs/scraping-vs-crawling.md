@@ -21,7 +21,9 @@ The specific information we want to extract will often be different for each doc
 
 ### Scrapers don’t crawl
 
-The point is that all a scraper does is **extract information from a (web) document**. It isn’t responsible for actually _retrieving_ said document. It could be the result of an HTTP request, a static `.html` file on your computer or the result of you hitting your hard drive with the radiation from your microwave by opening and closing its door in exactly the right sequence. This means that you can do web scraping without doing web crawling.
+The point is that all a scraper does is **extract information from a (web) document**. It isn’t responsible for actually _retrieving_ said document. It could be the result of an HTTP request, a static `.html` file on your computer or the result of you hitting your hard drive with the radiation from your microwave by opening and closing its door in exactly the right sequence.
+
+This means that you can do web scraping without doing web crawling.
 
 ## Crawlers
 

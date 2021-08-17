@@ -47,7 +47,7 @@ export default Vue.extend({
             },
             {
               label: "Items",
-              to: "#",
+              to: "/docs/items",
             },
             {
               label: "Processing Pipeline",
@@ -63,8 +63,8 @@ export default Vue.extend({
               to: "/docs/request-middleware",
             },
             {
-              label: "Response middleware",
-              to: "/docs/request-middleware",
+              label: "Item processors",
+              to: "/docs/item-processors",
             },
           ],
         },

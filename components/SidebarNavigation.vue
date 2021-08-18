@@ -59,6 +59,10 @@ export default Vue.extend({
           label: "Extending Roach",
           links: [
             {
+              label: "Dependency injection",
+              to: "/docs/dependency-injection",
+            },
+            {
               label: "Request middleware",
               to: "/docs/request-middleware",
             },

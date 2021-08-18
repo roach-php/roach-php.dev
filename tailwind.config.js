@@ -3,7 +3,12 @@ const plugin = require("tailwindcss/plugin");
 
 module.exports = {
   mode: "jit",
-  purge: ["./components/**/*.vue", "./pages/**/*.vue", "./layouts/**/*.vue"],
+  purge: [
+    "./components/**/*.vue",
+    "./pages/**/*.vue",
+    "./layouts/**/*.vue",
+    "./nuxt.config.js",
+  ],
   darkMode: "class", // or 'media' or 'class'
   theme: {
     extend: {

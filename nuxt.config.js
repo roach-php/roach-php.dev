@@ -66,7 +66,16 @@ export default {
           const children = [];
 
           if (fileName) {
-            children.push(h(node, "span", [u("raw", fileName)]));
+            children.push(
+              h(
+                node,
+                "span",
+                {
+                  className: "absolute top-2 right-3 text-gray-500 text-sm",
+                },
+                [u("raw", fileName)]
+              )
+            );
           }
 
           children.push(
@@ -75,7 +84,7 @@ export default {
             ])
           );
 
-          return h(node, "div", children);
+          return h(node, "div", { className: "relative" }, children);
         };
       },
     },

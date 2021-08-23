@@ -1,4 +1,4 @@
 ---
-title: Scraping responses
+title: Processing responses
 subtitle: Learn how to extract data from web documents and send them through the processing pipeline.
 ---

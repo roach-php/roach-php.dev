@@ -28,7 +28,7 @@ export default Vue.extend({
       links: [
         {
           label: "Docs",
-          to: "/docs",
+          to: "/docs/installation",
         },
         {
           label: "Github",

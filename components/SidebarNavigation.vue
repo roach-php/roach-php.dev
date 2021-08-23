@@ -28,30 +28,43 @@ export default Vue.extend({
               label: "Release notes",
               to: "/docs/release-notes",
             },
+            {
+              label: "Scraping versus Crawling",
+              to: "/docs/scraping-vs-crawling",
+            },
           ],
         },
         {
           label: "Basic Concepts",
           links: [
             {
-              label: "Scraping versus Crawling",
-              to: "/docs/scraping-vs-crawling",
-            },
-            {
               label: "Spiders",
               to: "/docs/spiders",
             },
             {
-              label: "Scraping Responses",
-              to: "/docs/scraping-responses",
+              label: "Processing Responses",
+              to: "/docs/processing-responses",
             },
             {
               label: "Items",
               to: "/docs/items",
             },
             {
-              label: "Processing Pipeline",
-              to: "/docs/processing-pipeline",
+              label: "Item Pipeline",
+              to: "/docs/item-pipeline",
+            },
+          ],
+        },
+        {
+          label: "Advanced Usage",
+          links: [
+            {
+              label: "Dependency injection",
+              to: "/docs/dependency-injection",
+            },
+            {
+              label: "Spider configuration",
+              to: "/docs/spider-configuration",
             },
           ],
         },
@@ -59,16 +72,20 @@ export default Vue.extend({
           label: "Extending Roach",
           links: [
             {
-              label: "Dependency injection",
-              to: "/docs/dependency-injection",
+              label: "Downloader middleware",
+              to: "/docs/downloader-middleware",
             },
             {
-              label: "Request middleware",
-              to: "/docs/request-middleware",
+              label: "Spider middleware",
+              to: "/docs/spider-middleware",
             },
             {
               label: "Item processors",
               to: "/docs/item-processors",
+            },
+            {
+              label: "Extensions",
+              to: "/docs/extensions",
             },
           ],
         },

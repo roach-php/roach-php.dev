@@ -1,12 +1,10 @@
 <template>
   <main class="pt-8 mx-auto max-w-7xl px-4 flex">
-    <div
-      class="hidden md:block w-52 pt-2.5 sticky top-4 self-start flex-shrink-0"
-    >
+    <div class="hidden md:block w-72 pt-2.5 self-start flex-shrink-0">
       <SidebarNavigation />
     </div>
 
-    <div class="md:pl-12 lg:px-12 overflow-auto w-full">
+    <div class="md:pl-20 lg:pl-20 overflow-auto w-full max-w-3xl">
       <div class="pb-24 border-b border-200">
         <div class="pb-8 mb-8 border-b border-gray-200">
           <div>
@@ -18,16 +16,12 @@
           <p class="text-gray-500 text-lg mt-1">{{ page.subtitle }}</p>
         </div>
 
-        <div class="prose">
+        <TableOfContents :toc="page.toc" />
+
+        <div class="prose mt-8">
           <nuxt-content :document="page" />
         </div>
       </div>
-    </div>
-
-    <div
-      class="hidden lg:block w-52 pt-2.5 sticky top-4 self-start flex-shrink-0"
-    >
-      <TableOfContents :toc="page.toc" />
     </div>
   </main>
 </template>

@@ -57,7 +57,7 @@ export default {
     markdown: {
       async highlighter() {
         const highlighter = await shiki.getHighlighter({
-          theme: "material-default",
+          theme: "material-palenight",
         });
 
         return (rawCode, lang, { fileName }, { h, node, u }) => {

@@ -32,7 +32,7 @@ export default Vue.extend({
         },
         {
           label: "Github",
-          to: "#",
+          to: "https://github.com/roach-php/roach",
           external: true,
         },
       ] as NavLink[],

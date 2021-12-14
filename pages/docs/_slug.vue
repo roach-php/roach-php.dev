@@ -43,4 +43,12 @@ export default Vue.extend({
 .prose .nuxt-content > :first-child {
   @apply mt-0;
 }
+
+.prose .nuxt-content h2 {
+  @apply mt-16;
+}
+
+.prose .nuxt-content h3 {
+  @apply mt-14;
+}
 </style>

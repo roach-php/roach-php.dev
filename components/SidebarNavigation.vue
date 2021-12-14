@@ -56,6 +56,27 @@ export default Vue.extend({
           ],
         },
         {
+          label: "Configuring Spiders",
+          links: [
+            {
+              label: "Spider Middleware",
+              to: "/docs/spider-middleware",
+            },
+            {
+              label: "Request Middleware",
+              to: "/docs/spider-middleware",
+            },
+            {
+              label: "Item Processors",
+              to: "/docs/item-processors",
+            },
+            {
+              label: "Extensions",
+              to: "/docs/extensions",
+            },
+          ],
+        },
+        {
           label: "Advanced Usage",
           links: [
             {
@@ -81,12 +102,13 @@ export default Vue.extend({
             },
             {
               label: "Item processors",
-              to: "/docs/item-processors",
+              to: "/docs/writing-item-processors",
             },
             {
-              label: "Extensions",
-              to: "/docs/extensions",
+              label: "Writing Extensions",
+              to: "/docs/writing-extensions",
             },
+
           ],
         },
       ] as Array<Section>,

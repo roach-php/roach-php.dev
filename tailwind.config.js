@@ -47,7 +47,7 @@ module.exports = {
     },
   },
   plugins: [
-    require("@tailwindcss/typography"),
+    require("@tailwindcss/typography")({ target: "legacy" }),
     plugin(function ({ addVariant, e }) {
       addVariant("current", ({ modifySelectors, separator }) => {
         modifySelectors(({ className }) => {

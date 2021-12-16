@@ -7,7 +7,7 @@
         fixed
         w-[18rem]
         inset-0
-        left-[max(0px,calc(50%-40rem))]
+        left-[max(0.01px,calc(50%-40rem))]
         right-auto
         px-8
         py-10
@@ -49,7 +49,7 @@
           px-8
           py-10
           top-[4.5rem]
-          right-[max(0px,calc(50%-40rem))]
+          right-[max(0.01px,calc(50%-40rem))]
           self-start
           overflow-y-auto
           flex-shrink-0

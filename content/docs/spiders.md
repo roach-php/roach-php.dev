@@ -46,7 +46,7 @@ Here’s how this spider will be processed:
 1. The response of each request gets passed to the `parse` method of the spider.
 1. Inside the `parse` method, we filter the response using CSS selectors to extract both the title and subtitle. Check out the page on [scraping responses](/docs/scraping-responses) for more information.
 1. We then `yield` and item from our method by calling `$this->item(...)` and passing in array of our data.
-1. The item will then get sent through the [item processing pipeline](/docs/processing-pipeline).
+1. The item will then get sent through the [item processing pipeline](/docs/item-pipeline).
 1. Since there are no further requests to be sent, the spider closes.
 
 ## Generating the initial requests
@@ -56,6 +56,8 @@ When Roach starts a run of your spider, it first generates the initial requests 
 ### Static URLs
 
 The most straight forward way of specifying the starting URLs for a spider is via the `$startUrls` property.
+
+<CodeBlock>
 
 ```php
 class MySpider extends AbstractSpider
@@ -68,6 +70,8 @@ class MySpider extends AbstractSpider
 }
 ```
 
+</CodeBlock>
+
 Roach will send a request to each URL defined in this array and call the `parse` method for each respective response.
 
 ### Dynamically defining starting URLs
@@ -75,6 +79,8 @@ Roach will send a request to each URL defined in this array and call the `parse`
 Sometimes we may have to dynamically define our spider’s seeds. A possible example could be that we want to start our crawl on a page that contains today’s date in its URL. Since we can’t hardcode this date, we have to determine it at runtime.
 
 In these cases we can override the `getStartUrls()` method of the `AbstractSpider` class.
+
+<CodeBlock>
 
 ```php
 class MySpider extends AbstractSpider
@@ -91,3 +97,5 @@ class MySpider extends AbstractSpider
     }
 }
 ```
+
+</CodeBlock>

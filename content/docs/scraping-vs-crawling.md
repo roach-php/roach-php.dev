@@ -1,6 +1,6 @@
 ---
 title: Scraping versus Crawling
-section: Basic Concepts
+section: Getting Started
 subtitle: Familiarize yourself with the concepts of scraping and crawling as they will be used a lot in this documentation.
 ---
 

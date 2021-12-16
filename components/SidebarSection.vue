@@ -1,10 +1,10 @@
 <template>
   <li>
-    <h5 class="text-sm font-medium text-gray-700 px-2">
+    <h5 class="text-sm font-semibold text-gray-700">
       {{ section.label }}
     </h5>
 
-    <ul class="mt-4">
+    <ul class="mt-3">
       <li v-for="link in section.links" :key="link.to">
         <SidebarLink :link="link" />
       </li>

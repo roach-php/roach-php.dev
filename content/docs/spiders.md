@@ -1,11 +1,12 @@
 ---
 title: Spiders
+section: Basic Concepts
 subtitle: Define how websites get crawled and how data is scraped from its pages.
 ---
 
 Spiders are classes which define how a website will get processed. This includes both crawling for links and extracting data from specific pages (scraping).
 
-## Your First Spider
+## Example spider
 
 It's easiest to explain all the different parts of a spider by looking at an example. Here's a spider that extracts the title and subtitle of all pages of this very documentation.
 
@@ -19,7 +20,7 @@ use RoachPHP\Spider\Response;
 
 class RoachDocsSpider extends BasicSpider
 {
-    public array $startUrls = ['https://roach-php.dev/docs'];
+    public array $startUrls = ['https://roach-php.dev/docs/spiders'];
 
     public function parse(Response $response): Generator
     {
@@ -28,7 +29,7 @@ class RoachDocsSpider extends BasicSpider
         $subtitle = $response
             ->filter('main > div:nth-child(2) p:first-of-type')
             ->text();
-          
+
         yield $this->item([
             'title' => $title,
             'subtitle' => $subtitle,
@@ -90,59 +91,3 @@ class MySpider extends AbstractSpider
     }
 }
 ```
-
-## Dispatching requests
-
-We often want to crawl additional pages based on the links we found on the current page. We can instruct Roach to do so by yielding a new request from our `parse` method.
-
-```php
-public function parse(Response $response): Generator
-{
-    $links = $response->filter('nav a')->links();
-
-    foreach ($links as $link) {
-        yield $this->request($link->getUrl());
-    }
-}
-```
-
-The `$this->request()` method takes in the URL and returns a new request object. Yielding a request object from our parse method tells Roach that we intend to crawl this URL as well.
-
-### Defining different parse methods
-
-By default, Roach will call the `parse` method of your spider to process a request’s response. It is often desireable, however, to use different callbacks for different requests. We can do so by passing the name of the method as the second parameter to `$this->request()`.
-
-```php{5}
-class BlogSpider extends AbstractSpider
-{
-    public array $startUrls = [
-        'https://kai-sassnowski.com'
-    ];
-
-    public function parse(Response $response): Generator
-    {
-        $links = $response->filter('header + div a')->links();
-
-        foreach ($links as $link) {
-            yield $this->request($link->getUri(), 'parseBlogPage');
-        }
-    }
-
-    public function parseBlogPage(Response $response): Generator
-    {
-        $title = $response->filter('h1')->text();
-        $publishDate = $response
-            ->filter('time')
-            ->attr('datetime');
-        $excerpt = $response
-            ->filter('.blog-content div > p:first-of-type')
-            ->text();
-
-        yield $this->item(compact('title', 'publishDate', 'excerpt'));
-    }
-}
-```
-
-In this example, Roach will send an initial request to `https://kai-sassnowski.com` since that’s the only URL defined in `$startUrls`. The response of this request will get passed to the `parse` method which in turn dispatches several new request. The responses of these requests will then get passed to the `parseBlogPage` method, since that’s the method we specified when yielding the requests.
-
-This is a very useful features that allows you to define different parsing logic for different sub pages, all within a single spider.

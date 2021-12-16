@@ -18,7 +18,7 @@ export default Vue.extend({
     return {
       sections: [
         {
-          label: "Getting started",
+          label: "Getting Started",
           links: [
             {
               label: "Installation",
@@ -64,7 +64,7 @@ export default Vue.extend({
             },
             {
               label: "Request Middleware",
-              to: "/docs/spider-middleware",
+              to: "/docs/request-middleware",
             },
             {
               label: "Item Processors",

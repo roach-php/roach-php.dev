@@ -11,6 +11,7 @@
       font-medium
       py-2
       px-2
+      -ml-2
     "
   >
     {{ link.label }}

@@ -1,5 +1,6 @@
 ---
 title: Installation
+section: Getting Started
 subtitle: Learn how to install Roach into your project.
 ---
 

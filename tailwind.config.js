@@ -3,7 +3,7 @@ const plugin = require("tailwindcss/plugin");
 
 module.exports = {
   mode: "jit",
-  purge: [
+  content: [
     "./components/**/*.vue",
     "./pages/**/*.vue",
     "./layouts/**/*.vue",
@@ -13,7 +13,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        gray: colors.blueGray,
+        gray: colors.slate,
         cyan: colors.cyan,
       },
 

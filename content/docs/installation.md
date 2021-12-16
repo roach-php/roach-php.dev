@@ -11,7 +11,7 @@ Most project will want to install one of Roach’s framework specific adapters t
 <CodeBlock>
 
 ```bash
-composer require roach-php/roach
+composer require roach-php/core
 ```
 
 </CodeBlock>

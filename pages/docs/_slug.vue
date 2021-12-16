@@ -1,21 +1,7 @@
 <template>
   <main class="mx-auto max-w-8xl md:px-8 flex overflow-hidden">
     <div
-      class="
-        hidden
-        md:block
-        fixed
-        w-[18rem]
-        inset-0
-        left-[max(0.01px,calc(50%-45rem))]
-        right-auto
-        px-8
-        py-10
-        top-[4.5rem]
-        self-start
-        flex-shrink-0
-        overflow-y-auto
-      "
+      class="hidden md:block fixed w-[18rem] inset-0 left-[max(0.01px,calc(50%-45rem))] right-auto px-8 py-10 top-[4.5rem] self-start flex-shrink-0 overflow-y-auto"
     >
       <SidebarNavigation />
     </div>
@@ -41,19 +27,7 @@
       </div>
 
       <div
-        class="
-          hidden
-          fixed
-          xl:block
-          w-[18rem]
-          px-8
-          py-10
-          top-[4.5rem]
-          right-[max(0.01px,calc(50%-45rem))]
-          self-start
-          overflow-y-auto
-          flex-shrink-0
-        "
+        class="hidden fixed xl:block w-[18rem] px-8 py-10 top-[4.5rem] right-[max(0.01px,calc(50%-45rem))] self-start overflow-y-auto flex-shrink-0"
       >
         <TableOfContents :toc="page.toc" />
       </div>
@@ -65,6 +39,12 @@
 import Vue from "vue";
 
 export default Vue.extend({
+  head() {
+    return {
+      // @ts-ignore
+      title: `${this.page.title} — Roach PHP`,
+    };
+  },
   async asyncData({ $content, params }) {
     const slug = params.slug || "index";
     const page = await $content(`docs/${slug}`).fetch();

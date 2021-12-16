@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import Vue from "vue";
+
 import { HeaderNavLink as NavLink } from "./HeaderNavLink.vue";
 
 export default Vue.extend({

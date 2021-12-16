@@ -15,14 +15,19 @@ It's easiest to explain all the different parts of a spider by looking at an exa
 ```php
 <?php
 
+use RoachPHP\Http\Response;
 use RoachPHP\Spider\BasicSpider;
-use RoachPHP\Spider\Response;
 
 class RoachDocsSpider extends BasicSpider
 {
-    public array $startUrls = ['https://roach-php.dev/docs/spiders'];
+    /**
+     * @var string[]
+     */
+  	public array $startUrls = [
+        'https://roach-php.dev/docs/spiders'
+    ];
 
-    public function parse(Response $response): Generator
+    public function parse(Response $response): \Generator
     {
         $title = $response->filter('h1')->text();
 
@@ -44,7 +49,7 @@ Here’s how this spider will be processed:
 
 1. Roach starts by sending requests to all URLs defined inside the `$startUrls` property of the spider. In our case, there’s only the single URL `https://roach-php.dev/docs/spiders`.
 1. The response of each request gets passed to the `parse` method of the spider.
-1. Inside the `parse` method, we filter the response using CSS selectors to extract both the title and subtitle. Check out the page on [scraping responses](/docs/scraping-responses) for more information.
+1. Inside the `parse` method, we filter the response using CSS selectors to extract both the title and subtitle. Check out the page on [scraping responses](/docs/processing-responses) for more information.
 1. We then `yield` and item from our method by calling `$this->item(...)` and passing in array of our data.
 1. The item will then get sent through the [item processing pipeline](/docs/item-pipeline).
 1. Since there are no further requests to be sent, the spider closes.
@@ -60,13 +65,22 @@ The most straight forward way of specifying the starting URLs for a spider is vi
 <CodeBlock>
 
 ```php
-class MySpider extends AbstractSpider
+<?php
+
+use RoachPHP\Http\Response;
+use RoachPHP\Spider\BasicSpider;
+
+class MySpider extends BasicSpider
 {
+    /**
+     * @var string[]
+     */
     public array $startUrls = [
         'https://roach-php.dev/docs/spiders',
     ];
 
-    public function parse(Response $response) { /* ... */ }
+    public function parse(Response $response): \Generator
+    { /* ... */ }
 }
 ```
 
@@ -83,10 +97,19 @@ In these cases we can override the `getStartUrls()` method of the `AbstractSpide
 <CodeBlock>
 
 ```php
-class MySpider extends AbstractSpider
-{
-    public function parse(Response $response) { /* ... */ }
+<?php
 
+use RoachPHP\Http\Response;
+use RoachPHP\Spider\BasicSpider;
+
+class MySpider extends BasicSpider
+{
+    public function parse(Response $response): \Generator
+    { /* ... */ }
+
+    /**
+     * @return string[]
+     */
     protected function getStartUrls(): array
     {
         $yesterday = (new DateTime('yesterday'))->format('Y/m/d');

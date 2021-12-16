@@ -22,5 +22,5 @@ That’s all there is to it.
 
 There are several first-party packages that help you seamlessly integrate Roach with your favorite web framework.
 
-- [Laravel](/docs/laravel)
-- [Symfony](/docs/symfony)
+- [Laravel](#)
+- [Symfony](#)

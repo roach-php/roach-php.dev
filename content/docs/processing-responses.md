@@ -20,11 +20,11 @@ This response object is what gets passed to the parse method we specified when d
 
 ```php
 use RoachPHP\Http\Response;
-use RoachPHP\Spider\AbstractSpider;
+use RoachPHP\Spider\BasicSpider;
 
-class MyNeatSpider extends AbstractSpider
+class MyNeatSpider extends BasicSpider
 {
-    public function parse(Response $response): Generator
+    public function parse(Response $response): \Generator
     {
         // Do neat stuff with the response...
     }
@@ -111,9 +111,9 @@ Using a generator instead of just returning a value allows us to produce multipl
 
 use RoachPHP\Http\Response;
 use RoachPHP\ResponseProcessing\ParseResult;
-use RoachPHP\Spider\AbstractSpider;
+use RoachPHP\Spider\BasicSpider;
 
-class MySpider extends AbstractSpider
+class MySpider extends BasicSpider
 {
     /**
      * @return Generator<ParseResult>
@@ -154,7 +154,7 @@ We often want to crawl additional pages based on the links we found on the curre
 <CodeBlock>
 
 ```php
-public function parse(Response $response): Generator
+public function parse(Response $response): \Generator
 {
     $links = $response->filter('nav a')->links();
 
@@ -171,7 +171,7 @@ The `$this->request()` method takes in the URL and returns a new `ParseResult` o
 <CodeBlock>
 
 ```php
-AbstractSpider::request(
+BasicSpider::request(
     string $uri,
     string $parseMethod = 'parse'
 ): ParseResult
@@ -188,7 +188,7 @@ By default, Roach will call the `parse` method of your spider to process a reque
 <CodeBlock>
 
 ```php
-class BlogSpider extends AbstractSpider
+class BlogSpider extends BasicSpider
 {
     public array $startUrls = [
         'https://kai-sassnowski.com'
@@ -231,7 +231,7 @@ In order to tell Roach to do that, we can use the `$this->item()` method on the 
 <CodeBlock>
 
 ```php
-AbstractSpider::item(array $item): ParseResult
+BasicSpider::item(array $item): ParseResult
 ```
 
 </CodeBlock>
@@ -245,9 +245,9 @@ Items can have as many entries as we want. Here’s an example of how we can pro
 ```php
 <?php
   
-use RoachPHP\Spider\AbstractSpider;
+use RoachPHP\Spider\BasicSpider;
 
-class MySpider extends AbstractSpider
+class MySpider extends BasicSpider
 {
     public function parse(Response $response): \Generator
     {
@@ -269,9 +269,9 @@ We could just as easily extract the excerpt and subtitle from this page as well,
 ```php
 <?php
   
-use RoachPHP\Spider\AbstractSpider;
+use RoachPHP\Spider\BasicSpider;
 
-class MySpider extends AbstractSpider
+class MySpider extends BasicSpider
 {
     public function parse(Response $response): \Generator
     {

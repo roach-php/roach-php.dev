@@ -1,4 +1,5 @@
 ---
 title: Spider Middleware
-subtitle: lol
+section: Basic Concepts
+subtitle: Intercept incoming responses to spiders as well as outgoing requests and items.
 ---

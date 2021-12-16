@@ -80,6 +80,10 @@ export default Vue.extend({
           label: "Extending Roach",
           links: [
             {
+              label: "Dependency Injection",
+              to: "/docs/dependency-injection",
+            },
+            {
               label: "Writing Downloader Middleware",
               to: "/docs/writing-downloader-middleware",
             },

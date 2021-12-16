@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white sticky top-0 w-full z-40">
     <header
-      class="max-w-7xl mx-auto md:px-8 py-4 flex items-center justify-between"
+      class="max-w-8xl mx-auto md:px-8 py-4 flex items-center justify-between"
     >
       <NuxtLink to="/" class="mr-4">
         <RoachLogo />

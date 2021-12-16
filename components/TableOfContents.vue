@@ -4,7 +4,7 @@
 
     <ul class="mt-4">
       <li
-        class="pr-2 py-2 font-medium text-sm text-gray-500 hover:text-gray-900"
+        class="pr-2 py-2 text-sm text-gray-500 hover:text-gray-900"
         :class="{ 'pl-2': item.depth === 2, 'pl-6': item.depth === 3 }"
         v-for="item in toc"
         :key="item.id"

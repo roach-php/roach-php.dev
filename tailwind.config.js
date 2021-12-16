@@ -20,6 +20,7 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
+            maxWidth: "none",
             a: {
               color: theme("colors.cyan.800"),
             },
@@ -41,6 +42,10 @@ module.exports = {
           },
         },
       }),
+
+      maxWidth: {
+        "8xl": "90rem",
+      },
     },
     fontFamily: {
       sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],

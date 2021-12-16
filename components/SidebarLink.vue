@@ -6,9 +6,8 @@
       w-full
       rounded-md
       text-sm text-gray-500
-      current:bg-cyan-100 current:text-cyan-700
+      current:bg-cyan-100 current:text-cyan-700 current:font-medium
       hover:text-gray-900
-      font-medium
       py-2
       px-2
       -ml-2

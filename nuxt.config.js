@@ -9,7 +9,7 @@ export default {
     title: "docs",
     htmlAttrs: {
       lang: "en",
-      class: "h-full",
+      class: "h-full [--scroll-mt:9rem]",
     },
     bodyAttrs: {
       class: "bg-gray-50",

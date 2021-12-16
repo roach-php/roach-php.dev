@@ -122,3 +122,102 @@ class MySpider extends BasicSpider
 ```
 
 </CodeBlock>
+
+## Configuring Spiders
+
+The way to change the behavior of Roach is by registering **middleware** and **extensions** for our spider. By doing so, we can add default headers to each requests, deal with cookies, collect metrics for our runs and much more. 
+
+There are three different kinds of middleware.
+
+- [Downloader Middleware](/docs/downloader-middleware) — This middleware sits between the Roach engine and the **Downloader**, the component in charge of dealing with the HTTP side of things. Every outgoing request and incoming response gets passed through this middleware stack.
+- [Spider Middleware](/docs/spider-middleware) — The spider middleware sits between the engine and your spider. It handles responses before they get passed to your spider’s parse callback, as well as [items](/docs/items) and new requests that get emitted by our spiders.
+- [Item Processors](/docs/item-pipeline) — Every [item](/docs/items) that ours spiders emit get passed through the item processing pipeline. This pipeline consists of multiple item processors which, well, process the items. “Processing” can mean many different things of course. Anything from cleaning up data, filtering duplicates, storing things in a database or even sending notification mails.
+
+Extensions, on the other hand don’t live in a specific context, but listen on **events** that get fired at various points during a run instead. Don’t worry if this difference seems a little too esoteric at this point. It will be explained in more detail in the section about [extending Roach](/docs/writing-spider-middleware).
+
+### Defining Spider Configuration
+
+There is no definitive way to load a spider’s configuration. You might prefer defining all configuration in separate config files or leading it dynamically from the database. To help you get started, Roach provides a `BasicSpider` base class that you can extend from. This class allows you to provide your spider’s configuration as class properties.
+
+<CodeBlock>
+
+```php
+<?php
+  
+use RoachPHP\Spider\BasicSpider;
+
+class MySpider extends BasicSpider
+{
+    /**
+     * The spider middleware that should be used for runs
+     * of this spider.
+     */
+  	public array $spiderMiddleware = [];
+    
+    /**
+     * The downloader middleware that should be used for
+     * runs of this spider.
+     */
+    public array $downloaderMiddleware = [];
+  
+  	/**
+  	 * The item processors that emitted items will be send
+  	 * through.
+  	 */
+  	public array $itemProcessors = [];
+  
+  	/**
+  	 * The extensions that should be used for runs of this
+  	 * spider.
+  	 */
+  	public array $extensions = [];
+  
+  	/**
+  	 * How many requests are allowed to be sent concurrently.
+  	 */
+  	public int $concurrency = 2;
+  
+    /**
+     * The delay (in seconds) between requests. Note that there
+     * is no delay between concurrent requests. Instead, Roach
+     * will wait for the `$requestDelay` before sending the
+     * next "batch" of concurrent requests.
+     */
+  	public int $requestDelay = 2;
+}
+```
+
+</CodeBlock>
+
+To register the `RequestDeduplicationMiddleware` that ships with Roach, we would add its fully qualified class-name (FQCN) to the `$downloaderMiddleware` array.
+
+<CodeBlock>
+
+```php
+public array $downloaderMiddleware = [
+  	RoachPHP\Downloader\Middleware\RequestDeduplication::class,
+];
+```
+
+</CodeBlock>
+
+### Passing Options to Middleware
+
+Some middleware or extensions might allow you to pass options to them. For example, the built-in `UserAgentMiddleware` allows us to define a custom `userAgent` that will be attached to every request. In these cases, we use a slightly different syntax when registering the middleware.
+
+<CodeBlock>
+
+```php
+public array $downloaderMiddleware = [
+  	[
+      RoachPHP\Downloader\Middleware\UserAgentMiddleware::class, 
+      ['userAgent' => 'Mozilla/5.0 (compatible; RoachPHP/0.1.0)'],
+    ]
+];
+```
+
+</CodeBlock>
+
+Instead of passing the FQCN of the middleware directly, we pass an array instead. The first entry of the array is the FQCN of the middleware. The second entry is an array of options that will be passed to the middleware. In the example above, we’re setting the `userAgent` option of the middleware to `Mozilla/5.0 (compatible; RoachPHP/0.1.0)`.
+
+The exact options we can specify are defined by each handler individually. These options are explained on the respective sub-pages where we take a look at the built-in middleware and extensions.

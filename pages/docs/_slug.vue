@@ -1,5 +1,5 @@
 <template>
-  <main class="pt-8 mx-auto max-w-7xl md:px-8 flex overflow-hidden">
+  <main class="mx-auto max-w-8xl md:px-8 flex overflow-hidden">
     <div
       class="
         hidden
@@ -7,7 +7,7 @@
         fixed
         w-[18rem]
         inset-0
-        left-[max(0.01px,calc(50%-40rem))]
+        left-[max(0.01px,calc(50%-45rem))]
         right-auto
         px-8
         py-10
@@ -20,8 +20,8 @@
       <SidebarNavigation />
     </div>
 
-    <div class="md:pl-[18rem] overflow-auto w-full">
-      <div class="pb-24 border-b border-200 xl:pr-16 xl:mr-[14rem]">
+    <div class="md:pl-[19rem] overflow-auto w-full">
+      <div class="pb-24 pt-8 xl:pr-16 xl:mr-[15.5rem]">
         <div class="pb-8 mb-8 border-b border-gray-200">
           <div>
             <p class="font-semibold text-cyan-500 tracking-tight mb-2 text-sm">
@@ -49,7 +49,7 @@
           px-8
           py-10
           top-[4.5rem]
-          right-[max(0.01px,calc(50%-40rem))]
+          right-[max(0.01px,calc(50%-45rem))]
           self-start
           overflow-y-auto
           flex-shrink-0

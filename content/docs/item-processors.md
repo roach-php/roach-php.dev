@@ -1,4 +1,6 @@
 ---
 title: Item processors
-subtitle: Extend your spiders by writing custom item processors.
+section: Basic Concepts
+subtitle: Clean, filter and process data extracted by your spiders.
 ---
+

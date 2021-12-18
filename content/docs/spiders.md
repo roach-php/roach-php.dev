@@ -221,3 +221,24 @@ public array $downloaderMiddleware = [
 Instead of passing the FQCN of the middleware directly, we pass an array instead. The first entry of the array is the FQCN of the middleware. The second entry is an array of options that will be passed to the middleware. In the example above, we’re setting the `userAgent` option of the middleware to `Mozilla/5.0 (compatible; RoachPHP/0.1.0)`.
 
 The exact options we can specify are defined by each handler individually. These options are explained on the respective sub-pages where we take a look at the built-in middleware and extensions.
+
+This process is identical for `$spiderMiddleware`, `$itemProcessors` and `$extensions` .
+
+## Running Spiders
+
+After we have set up our spider, it’s finally time to run it. Luckily, Roach makes this super easy. All we have to do is pass the class name of our spider to the static `Roach::run()` method and Roach will take care of the rest.
+
+<CodeBlock>
+
+```php
+<?php
+    
+use App\Spiders\MySpider;
+use RoachPHP\Roach;
+
+Roach::run(MySpider::class);
+```
+
+</CodeBlock>
+
+If that’s not the coolest thing you’ve ever seen, your life is probably not nearly as boring as mine!

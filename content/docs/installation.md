@@ -20,6 +20,7 @@ That’s all there is to it.
 
 ## Using Roach inside a framework
 
-There are several first-party packages that help you seamlessly integrate Roach with your favorite web framework.
+There are several first-party packages that help you seamlessly integrate Roach with your favorite web framework. Check out the corresponding documentation to learn more.
 
 - [Laravel](/docs/laravel)
+- _Symfony (Work in Progress)_ 

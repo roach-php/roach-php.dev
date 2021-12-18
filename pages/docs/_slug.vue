@@ -114,6 +114,10 @@ export default Vue.extend({
               label: "Item Pipeline",
               to: "/docs/item-pipeline",
             },
+            {
+              label: "Interactive Shell",
+              to: "/docs/repl",
+            },
           ],
         },
         {

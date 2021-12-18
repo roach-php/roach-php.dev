@@ -1,7 +1,5 @@
 <template>
   <div style="flex: 1 0 auto" class="antialiased">
-    <PageHeader />
-
     <Nuxt />
   </div>
 </template>

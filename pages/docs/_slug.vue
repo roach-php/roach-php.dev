@@ -28,6 +28,18 @@
       <div class="lg:pl-[19rem] overflow-auto w-full">
         <div class="pb-24 pt-8 md:px-0 xl:pr-16 xl:mr-[15.5rem]">
           <div class="pb-8 mb-8 border-b border-gray-200">
+            <div class="bg-yellow-500 mb-4">
+              <div class="max-w-7xl p-3">
+                <p class="text-sm text-white">
+                  <span class="font-bold">🐴 &nbsp;Oh, hi there!</span> You’re
+                  looking at a pre-release version of the docs, so some pages
+                  might feel a little … empty. While the package itself should
+                  be stable, use it at your own risk until there is a tagged
+                  release.
+                </p>
+              </div>
+            </div>
+
             <div>
               <p
                 class="font-semibold text-cyan-500 tracking-tight mb-2 text-sm"

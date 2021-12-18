@@ -52,6 +52,15 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: ["@nuxt/content"],
 
+  router: {
+    extendRoutes(routes) {
+      routes.push({
+        path: "/",
+        redirect: "/docs/installation",
+      });
+    },
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     postcss: {

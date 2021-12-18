@@ -1,5 +1,5 @@
 <template>
-  <main class="mx-auto max-w-8xl md:px-8 flex overflow-hidden">
+  <main class="mx-auto max-w-8xl px-8 flex overflow-hidden">
     <div
       class="hidden md:block fixed w-[18rem] inset-0 left-[max(0.01px,calc(50%-45rem))] right-auto px-8 py-10 top-[4.5rem] self-start flex-shrink-0 overflow-y-auto"
     >
@@ -7,7 +7,7 @@
     </div>
 
     <div class="md:pl-[19rem] overflow-auto w-full">
-      <div class="pb-24 pt-8 xl:pr-16 xl:mr-[15.5rem]">
+      <div class="pb-24 pt-8 md:px-0 xl:pr-16 xl:mr-[15.5rem]">
         <div class="pb-8 mb-8 border-b border-gray-200">
           <div>
             <p class="font-semibold text-cyan-500 tracking-tight mb-2 text-sm">

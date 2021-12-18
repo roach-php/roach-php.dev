@@ -145,7 +145,7 @@ class MySpider extends BasicSpider
 
 Using generators allows us to both extract information from a page as well as dispatch additional requests to continue the crawl.
 
-Note how there is no mention of a `ParseResult` class in the example above. Most of the heavy lifting is down by two method calls that we’re going to look at next: `$this->item()` and `$this->request()`.
+Note how there is no mention of a `ParseResult` class in the example above. Most of the heavy lifting is done by two method calls that we’re going to look at next: `$this->item()` and `$this->request()`.
 
 ## Dispatching requests
 
@@ -224,9 +224,9 @@ In this example, Roach will send an initial request to `https://kai-sassnowski.c
 
 ## Extracting Items
 
-More often than not, the goal of a spider is to extract certain bits of information from a document. We can do so by [filtering the response](#using-selectors) using either CSS or XPath selectors as described in an earlier section. Once we have extracted the data, we want to send it through the [item pipeline](/docs/item-pipeline) so it may be processed further.
+Ultimately, the goal of a spider is to extract information from a document. We can do so by [filtering the response](#using-selectors) using either CSS or XPath selectors as described in an earlier section. Once we have extracted the data, we want to send it through the [item pipeline](/docs/item-pipeline) so it may be processed further.
 
-In order to tell Roach to do that, we can use the `$this->item()` method on the base class.
+To send an item through the item pipeline, we can use the `$this->item()` method on the base class.
 
 <CodeBlock>
 
@@ -238,13 +238,14 @@ BasicSpider::item(array $item): ParseResult
 
 This method produces a `ParseResult` representing an item to be sent through the [processing pipeline](/docs/item-pipeline). Items are simply bags of data, represented by an associative array. Behind the scenes, this array will get wrapped in an [`Item`](/docs/items) object so it can be worked with more easily than a plain array.
 
-Items can have as many entries as we want. Here’s an example of how we can produce an item containing only the main headline of the page.
+Items can have as many entries as we want. Here’s an example of how we can produce an item containing the main headline of the page.
 
 <CodeBlock>
 
 ```php
 <?php
   
+use RoachPHP\Http\Response;
 use RoachPHP\Spider\BasicSpider;
 
 class MySpider extends BasicSpider
@@ -262,7 +263,7 @@ class MySpider extends BasicSpider
 
 </CodeBlock>
 
-We could just as easily extract the excerpt and subtitle from this page as well, however.
+Items aren’t limited to a single piece of information. We can just as easily yield an item that contains the headline, subtitle and excerpt, for example.
 
 <CodeBlock>
 
@@ -289,3 +290,5 @@ class MySpider extends BasicSpider
 ```
 
 </CodeBlock>
+
+See the section about the [item processing pipeline](/docs/item-pipeline) to learn about what happens to items yielded from a spider.

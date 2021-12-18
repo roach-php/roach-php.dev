@@ -23,14 +23,14 @@ interface ItemProcessorInterface extends ConfigurableInterface
 
 </CodeBlock>
 
-So what are things that we can do with item processors? Here are a few suggestions to get you started. 
+So what are things that we can do with item processors? Here are a few suggestions to get you started.
 
 - Save the item to a database
 - Validate if the item contains all necessary data and drop it if it doesn’t
 - Send an email notification if a specific item was scraped
 - Add additional meta data to an item
 
-An item processor should be focused on a single task. So instead of having one processor that validates an item, saves it to the database and sends a notification mail, we should instead write three separate processors for each of those tasks. This allows us to keep processors simple and easily testable. 
+An item processor should be focused on a single task. So instead of having one processor that validates an item, saves it to the database and sends a notification mail, we should instead write three separate processors for each of those tasks. This allows us to keep processors simple and easily testable.
 
 Because of the plug-and-play nature of the item pipeline, we can create arbitrarily complex pipelines from simple building blocks.
 
@@ -59,10 +59,10 @@ Say we want to write a processor that filters out items based on a minimum value
 
 ```php
 <?php
- 
+
 use RoachPHP\ItemPipeline\ItemInterface;
 use RoachPHP\ItemPipeline\ItemProcessor;
-  
+
 class MinimumScoredGoalsProcessor extends ItemProcessor
 {
   	public function __construct()
@@ -74,20 +74,59 @@ class MinimumScoredGoalsProcessor extends ItemProcessor
           	'threshold' => 4
         ]);
     }
-  
+
   	public function processItem(ItemInterface $item): ItemInterface
     {
       	$totalGoals = $item->get('awayGoals', 0) + $item->get('homeGoals', 0);
-      
+
       	if ($totalGoals < $this->options['threshold']) {
           	return $item->drop(
                 sprintf('Fewer than %s goals scored', $this->options['threshold'])
           	);
-        }	
-      
+        }
+
       	return $item;
     }
 }
+```
+
+</CodeBlock>
+
+To register this processor, we add it to the `$itemProcessors` property of our spider and specify the minimum goal threshold we want to use.
+
+<CodeBlock>
+
+```php
+<?php
+
+use App\ItemProcessors\MinimumScoredGoalsProcessor;
+use RoachPHP\Spider\BasicSpider;
+
+class MySpider extends BasicSpider
+{
+    public array $itemProcessors = [
+        // We care only about games with a minimum of
+        // 10 scored goals. Wow!
+        [
+            MinimumScoredGoalsProcessor::class,
+            ['threshold' => 10],
+        ],
+    ];
+}
+```
+
+</CodeBlock>
+
+If we were to simply register the processor without specifying any options, it would use the default values instead.
+
+<CodeBlock>
+
+```php
+public array $itemProcessors = [
+    // No options specified, using whatever defaults are
+    // defined in the processor class (4, in this example).
+    MinimumScoredGoalsProcessor::class,
+];
 ```
 
 </CodeBlock>
@@ -100,10 +139,10 @@ We can stop an item from being processed further by calling the `drop()` method 
 
 ```php
 <?php
- 
+
 use RoachPHP\ItemPipeline\ItemInterface;
 use RoachPHP\ItemPipeline\ItemProcessor;
-  
+
 class ValidateMatchProcessor implements ItemProcessor
 {
   	public function processItem(ItemInterface $item): ItemInterface
@@ -111,7 +150,7 @@ class ValidateMatchProcessor implements ItemProcessor
         if (!($item->has('score') && $item->get('score') !== null)) {
           	return $item->drop('Missing score');
         }
-      
+
       	return $item;
     }
 }
@@ -148,22 +187,24 @@ Roach uses a [dependency injection container](/docs/dependency-injection) behind
 
 ```php
 <?php
-  
+
 use App\Repository\MatchRepository;
 use RoachPHP\ItemPipeline\ItemInterface;
-use RoachPHP\ItemPipeline\Processors\ItemProcessorInterface;
-  
-class SaveMatchToDatabaseProcessor implements ItemProcessorInterface
+use RoachPHP\ItemPipeline\ItemProcessor;
+
+class SaveMatchToDatabaseProcessor extends ItemProcessor
 {
   	public function __construct(
       private MatchRepository $repository
     ) {
+        // Don't forget this!
+        parent::__construct();
     }
-  
+
   	public function processItem(ItemInterface $item): ItemInterface
     {
-  			$matchId = $this->repository->save($item->all());
-      
+  		$matchId = $this->repository->save($item->all());
+
       	return $item->set('id', $matchId);
     }
 }
@@ -171,3 +212,4 @@ class SaveMatchToDatabaseProcessor implements ItemProcessorInterface
 
 </CodeBlock>
 
+Remember to always call `parent::__construct()` when extending `ItemProcessor` and providing your own constructor, even if our processor doesn’t provide any configuration options.

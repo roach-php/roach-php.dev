@@ -56,7 +56,7 @@ export default Vue.extend({
           ],
         },
         {
-          label: "Configuring Spiders",
+          label: "Advanced Usage",
           links: [
             {
               label: "Spider Middleware",
@@ -67,37 +67,21 @@ export default Vue.extend({
               to: "/docs/downloader-middleware",
             },
             {
-              label: "Item Processors",
-              to: "/docs/item-processors",
-            },
-            {
               label: "Extensions",
               to: "/docs/extensions",
             },
-          ],
-        },
-        {
-          label: "Extending Roach",
-          links: [
             {
               label: "Dependency Injection",
               to: "/docs/dependency-injection",
             },
+          ],
+        },
+        {
+          label: "Framework Integration",
+          links: [
             {
-              label: "Writing Downloader Middleware",
-              to: "/docs/writing-downloader-middleware",
-            },
-            {
-              label: "Writing Spider middleware",
-              to: "/docs/writing-spider-middleware",
-            },
-            {
-              label: "Item processors",
-              to: "/docs/writing-item-processors",
-            },
-            {
-              label: "Writing Extensions",
-              to: "/docs/writing-extensions",
+              label: "Laravel",
+              to: "/docs/laravel",
             },
           ],
         },

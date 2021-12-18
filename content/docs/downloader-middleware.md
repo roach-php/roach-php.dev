@@ -1,5 +1,6 @@
 ---
 title: Downloader Middleware
+section: Advanced Usage
 subtitle: Learn how to write custom middleware to hook into Roach’s request/response cycle.
 ---
 

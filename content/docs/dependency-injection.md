@@ -1,5 +1,6 @@
 ---
 title: Dependency Injection
+section: Advanced Usage
 subtitle: Use a different dependency injection container for resolving spiders, middleware and processors.
 ---
 
@@ -15,8 +16,7 @@ Here’s an example of how we can do this inside a [Laravel](https://laravel.com
 
 <CodeBlock>
 
-```php
-// app/Providers/AppServiceProvider.php
+```php[AppServiceProvider.php]
 <?php
 
 use RoachPHP\Roach;

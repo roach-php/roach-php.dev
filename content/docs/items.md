@@ -4,7 +4,7 @@ section: Basic Concepts
 subtitle: An abstraction about data extracted from web documents.
 ---
 
-Items represent data that was extracted from documents. They are simple abstraction around PHP arrays that are more comfortable to work with then plain arrays.
+Items represent data that was extracted from documents. They are simple abstraction around PHP arrays that are more comfortable to work with than plain arrays.
 
 ## Using Items
 

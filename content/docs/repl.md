@@ -45,7 +45,7 @@ After starting the shell, Roach will make an HTTP request to the URL we specifie
 
 `$response` contains  `Response` object we got back from our request. This is the same object that gets passed to your spider’s [parse callback](/docs/processing-responses). This means that we can now use this object inside our shell to test our selectors.
 
-<CodeExample>
+<CodeBlock>
 
 ```php
 >>> $response->filter('h1')->text()
@@ -54,13 +54,13 @@ After starting the shell, Roach will make an HTTP request to the URL we specifie
 => "Quickly prototype spiders with Roach’s interactive shell."
 ```
 
-</CodeExample>
+</CodeBlock>
 
 What, how did you _think_ I wrote the examples for this documentation?!
 
 `$html` contains the entire HTML body of the response as a string. While this often is too noisy to be of much use, it can be useful for quick sanity checks if our selectors aren’t working like we expect them to.
 
-<CodeExample>
+<CodeBlock>
 
 ```php
 >>> $html
@@ -70,11 +70,13 @@ What, how did you _think_ I wrote the examples for this documentation?!
      <head>\n ..."""
 ```
 
-</CodeExample>
+</CodeBlock>
 
 ### Available Commands
 
 The shell also makes a `fetch` command available to us. The `fetch` command takes a URL as a parameter, sends a request to it, and updates the `$response` and `$html` variables in the shell accordingly.
+
+<CodeBlock>
 
 ```php
 >>> fetch https://roach-php.dev/docs/installation
@@ -89,3 +91,4 @@ Commands:
 => "Installation"
 ```
 
+</CodeBlock>

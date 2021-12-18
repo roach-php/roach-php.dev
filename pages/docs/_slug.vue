@@ -3,7 +3,9 @@
     <div class="sticky top-0 z-40">
       <PageHeader />
 
-      <div class="lg:hidden bg-white border-b border-gray-100 px-8 py-4">
+      <div
+        class="lg:hidden bg-white border-b border-gray-100 px-4 md:px-8 py-4"
+      >
         <div class="flex space-x-3 items-center">
           <MobileNavigation :sections="sections" />
 
@@ -16,7 +18,7 @@
       </div>
     </div>
 
-    <main class="mx-auto max-w-8xl px-8 flex overflow-hidden">
+    <main class="mx-auto max-w-8xl px-4 md:px-8 flex overflow-hidden">
       <div
         class="hidden lg:block fixed w-[18rem] inset-0 left-[max(0.01px,calc(50%-45rem))] right-auto px-8 py-10 top-[4.5rem] self-start flex-shrink-0 overflow-y-auto"
       >

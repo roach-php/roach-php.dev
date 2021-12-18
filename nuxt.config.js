@@ -56,7 +56,7 @@ export default {
     extendRoutes(routes) {
       routes.push({
         path: "/",
-        redirect: "/docs/installation",
+        redirect: "/docs/introduction",
       });
     },
   },

@@ -51,7 +51,7 @@ interface ConfigurableInterface
 
 This interface allows us to pass configuration options to our processors to make them more, well, configurable. Not all processors will need that kind of flexibility, however, so being forced to implement this method every time seems like a bit of a chore.
 
-To alleviate some of the boilerplate, Roach comes with an `ItemProcessor` base class that we can extend when writing our own processors. This base class implements the `ConfigurableInterface` and expects an array of options together with their default values as a constructor parameter. The constructor defaults to an empty array, so there’s nothing for us to do if our processor is not providing any configuration options.
+To alleviate some of the boilerplate, Roach comes with a `Configurable` trait we can use when writing our own processors. This trait provides the necessary methods to implement the `ConfigurableInterface` and allows us to define options  together with their default values via the `defaultOptions` method. This method defaults to an empty array, so there’s nothing for us to do if our processor is not providing any configuration options.
 
 Say we want to write a processor that filters out items based on a minimum value in a given field. We want to make the threshold configurable below which an item should be dropped. Here’s what that processor might look like.
 
@@ -61,19 +61,12 @@ Say we want to write a processor that filters out items based on a minimum value
 <?php
 
 use RoachPHP\ItemPipeline\ItemInterface;
-use RoachPHP\ItemPipeline\ItemProcessor;
+use RoachPHP\ItemPipeline\ItemProcessorInterface;
+use RoachPHP\Support\Configurable;
 
-class MinimumScoredGoalsProcessor extends ItemProcessor
+class MinimumScoredGoalsProcessor implements ItemProcessorInterface
 {
-  	public function __construct()
-    {
-        // If not overwritten by the user, the default threshold
-        // is 4. Any game with fewer goals than that will get
-        // dropped.
-      	parent::__construct([
-          	'threshold' => 4
-        ]);
-    }
+    use Configurable;
 
   	public function processItem(ItemInterface $item): ItemInterface
     {
@@ -86,6 +79,16 @@ class MinimumScoredGoalsProcessor extends ItemProcessor
         }
 
       	return $item;
+    }
+  
+  	private function defaultOptions(): array
+    {
+        // If not overwritten by the user, the default threshold
+        // is 4. Any game with fewer goals than that will get
+        // dropped.
+      	return [
+          	'threshold' => 4
+        ];
     }
 }
 ```
@@ -141,10 +144,13 @@ We can stop an item from being processed further by calling the `drop()` method 
 <?php
 
 use RoachPHP\ItemPipeline\ItemInterface;
-use RoachPHP\ItemPipeline\ItemProcessor;
+use RoachPHP\ItemPipeline\ItemProcessorInterface;
+use RoachPHP\Support\Configurable;
 
-class ValidateMatchProcessor implements ItemProcessor
+class ValidateMatchProcessor implements ItemProcessorInterface
 {
+    use Configurable;
+  
   	public function processItem(ItemInterface $item): ItemInterface
     {
         if (!($item->has('score') && $item->get('score') !== null)) {
@@ -190,15 +196,16 @@ Roach uses a [dependency injection container](/docs/dependency-injection) behind
 
 use App\Repository\MatchRepository;
 use RoachPHP\ItemPipeline\ItemInterface;
-use RoachPHP\ItemPipeline\ItemProcessor;
+use RoachPHP\ItemPipeline\ItemProcessorInterface;
+use RoachPHP\Support\Configurable;
 
-class SaveMatchToDatabaseProcessor extends ItemProcessor
+class SaveMatchToDatabaseProcessor implements ItemProcessorInterface
 {
+    use Configurable;
+  
   	public function __construct(
       private MatchRepository $repository
     ) {
-        // Don't forget this!
-        parent::__construct();
     }
 
   	public function processItem(ItemInterface $item): ItemInterface
@@ -211,5 +218,3 @@ class SaveMatchToDatabaseProcessor extends ItemProcessor
 ```
 
 </CodeBlock>
-
-Remember to always call `parent::__construct()` when extending `ItemProcessor` and providing your own constructor, even if our processor doesn’t provide any configuration options.

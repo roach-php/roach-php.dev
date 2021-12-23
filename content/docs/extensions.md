@@ -21,9 +21,161 @@ interface ExtensionInterface extends ConfigurableInterface, EventSubscriberInter
 
 </CodeBlock>
 
-We can see that extensions are really just glorified event listeners. Every extension needs to provide a list of [events](/docs/extensions#events) it wants to listen on along with the event handler.
+We can see that all extensions are, are glorified event listeners. Every extension needs to provide a list of [events](/docs/extensions#events) it wants to listen on along with the event handler to be called when the event fires.
 
-_todo_
+<CodeBlock>
+
+```php
+<?php
+    
+use RoachPHP\Events\RunFinished;
+use RoachPHP\Extensions\ExtensionInterface;
+use RoachPHP\Support\Configurable;
+
+class EmailDigestExtension implements ExtensionInterface
+{
+    public function __construct(private Mailer $mailer)
+    {
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+        	RunFinished::class => ['onRunFinished', 100],  
+        ];
+    }
+    
+    public function onRunFinished(RunFinished $event): void
+    {
+    	// Totally real and production ready code
+        $this->mailer->sendNotificationMail($event->run);
+    }
+}
+```
+
+</CodeBlock>
+
+Roach uses Symfony’s [`EventDispatcher`](https://symfony.com/doc/current/components/event_dispatcher.html) component under hood, so check out its [documentation about event subscribers](https://symfony.com/doc/current/components/event_dispatcher.html#using-event-subscribers) for a more thorough explanation.
+
+### Configuration
+
+The `ExtensionInterface` also extends from a second interface: `ConfigurableInterface`. This interface is what allows us to pass configuration values to our extensions when registering them in our spiders.
+
+<CodeBlock>
+
+```php
+interface ConfigurableInterface
+{
+    public function configure(array $options): void;
+}
+```
+
+</CodeBlock>
+
+ `ConfigurableInterface` appears all over Roach’s codebase. All extensions and the various different kinds of middleware implement this interface. Since the implementation is going to look more less identical for every class, Roach comes with a handy `Configurable` trait that we can use to easily make our extension configurable, too.
+
+Here’s how we can make the email to which the run’s summary will be send configurable.
+
+<CodeBlock>
+
+```php
+<?php
+    
+use RoachPHP\Extensions\ExtensionInterface;
+use RoachPHP\Support\Configurable;
+
+class EmailDigestExtension implements ExtensionInterface
+{
+    use Configurable;
+    
+    public function __construct(private Mailer $mailer)
+    {
+    }
+    
+	public static function getSubscribedEvents(): array
+    { /* … */ }
+    
+    public function onRunFinished(RunFinished $event): void
+    { /* … */ }
+    
+    private function defaultOptions(): array
+    {
+        return [
+            'email' => 'no-reply@example.com',
+        ];
+    }
+}
+```
+
+</CodeBlock>
+
+We override the `Configurable` trait’s `defaultOptions` method and provide an array of options and their respective default values. In this example, we are now able to provide the `email` option when registering this extension in our spider.
+
+<CodeBlock>
+
+```php
+<?php
+    
+use App\Extensions\EmailDigestExtension;
+use RoachPHP\Spider\BasicSpider;
+
+class MySpider extends BasicSpider
+{
+    public array $extensions = [
+        [
+            EmailDigestExtension::class, 
+            ['email' => 'me@kai-sassnowski.com']
+        ],
+    ];
+}
+```
+
+</CodeBlock>
+
+If our extension does not take any configuration parameters, we still have to use the `Configurable` trait but don’t have to override the `defaultOptions` method.
+
+To access the configuration options inside the extension, we can use `option()` method that comes with the trait.
+
+<CodeBlock>
+
+```php
+<?php
+    
+use RoachPHP\Events\RunFinished;
+use RoachPHP\Extensions\ExtensionInterface;
+use RoachPHP\Support\Configurable;
+
+class EmailDigestExtension implements ExtensionInterface
+{
+    use Configurable;
+    
+    public function __construct(private Mailer $mailer)
+    {
+    }
+
+    public static function getSubscribedEvents(): array
+    { /* ... */ }
+    
+    public function onRunFinished(RunFinished $event): void
+    {
+        $recipient = $this->option('email');
+        
+        $this->mailer->sendNotificationMail(
+            $event->run,
+            $recipient,
+        );
+    }
+    
+    private function defaultOptions(): array
+    {
+        return [
+            'email' => 'no-reply@example.com',
+        ]
+    }
+}
+```
+
+</CodeBlock>
 
 ## Built-in Extensions
 

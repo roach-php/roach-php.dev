@@ -6,6 +6,10 @@ subtitle: Learn how to write custom middleware to hook into Roach’s request/re
 
 Downloader middleware sits between the Roach engine and the **Downloader**. The Downloader is in charge of handling the HTTP side of things, i.e. sending requests and retrieving responses. Every outgoing request and incoming response will get passed through the **downloader middleware**.
 
+## Writing Middleware
+
+
+
 ## Built-in Middleware
 
 Roach ships with various built-in downloader middleware for common tasks when dealing with HTTP requests and responses.

@@ -62,7 +62,7 @@ This command will create a new spider with the provided name inside our app’s 
 
 ### Starting the REPL
 
-Roach ships with an [interactive shell](/docs/repl) (often called Read-Eval-Print-Loop, or Replfor short) which makes prototyping our spiders a breeze. We can use the provided `roach:shell` command to launch a new Repl session.
+Roach ships with an [interactive shell](/docs/repl) (often called Read-Evaluate-Print-Loop, or Repl for short) which makes prototyping our spiders a breeze. We can use the provided `roach:shell` command to launch a new Repl session.
 
 <CodeBlock>
 

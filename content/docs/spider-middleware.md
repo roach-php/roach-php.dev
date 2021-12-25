@@ -54,6 +54,8 @@ interface ResponseMiddlewareInterface extends ConfigurableInterface
 
 The `ResponseMiddlewareInterface` defines only a single `handleResponse` method that our middleware has to implement. This method accepts a `Response` object that was returned by the downloader and is supposed to return another `Response` object. Note that this `Response` has already been processed by any [downloader middleware](/docs/downloader-middleware) that was configured for the spider.
 
+#### Dropping Responses
+
 Since this method gets called _before_ the response gets passed to the spider’s parse callback, we can still drop the response at this point. To do so, we call the `drop()` method on the `Response` object and return it.
 
 <CodeBlock>
@@ -147,6 +149,8 @@ final class MaximumCrawlDepthMiddleware implements RequestMiddlewareInterface
 
 </CodeBlock>
 
+#### Dropping Requests
+
 To drop requests, we can call the `drop` method on the `Request` object and returning it.
 
 <CodeBlock>
@@ -195,6 +199,8 @@ This interface defines a single method `handleItem`. This method takes two param
 2. The `Response` object the spider was processing when it emitted the item
 
 Examples of item middleware are adding additional meta data to items or dropping unwanted items.
+
+#### Dropping Items
 
 To drop an item, we can call the `drop` method on the item and then returning it.
 

@@ -80,7 +80,7 @@ class MyResponseMiddleware implements ResponseMiddlewareInterface
 
 </CodeBlock>
 
-Dropping a response will prevent any further spider middleware from being called and the response will not get passed to the spider for processing.
+Dropping a response will prevent any further spider middleware from being called and the response will not get passed to the spider for processing .Roach will also fire a [`ResponseDropped`](/docs/extensions#responsedropped) event which we can subscribe on in an [extension](/docs/extensions#writing-extensions).
 
 ### Request Middleware
 
@@ -176,7 +176,7 @@ class MyRequestMiddleware implements RequestMiddlewareInterface
 
 </CodeBlock>
 
-Dropping a request will prevent any further spider middleware from running and the request will not get scheduled.
+Dropping a request will prevent any further spider middleware from running and the request will not get scheduled. Roach will also fire a [`RequestDropped`](/docs/extensions#requestdropped) event which we can subscribe on in an [extension](/docs/extensions#writing-extensions).
 
 ### Item Middleware
 
@@ -227,7 +227,7 @@ class MyItemMiddleware implements ItemMiddlewareInterface
 
 </CodeBlock>
 
-Dropping an item will prevent any further spider middleware from running and the item will not get passed through the [processing pipeline](/docs/item-pipeline).
+Dropping an item will prevent any further spider middleware from running and the item will not get passed through the [processing pipeline](/docs/item-pipeline). Roach will also fire an [`ItemDropped`](/docs/extensions#itemdropped) event which we can subscribe on in an [extension](/docs/extensions#writing-extensions).
 
 ## Built-in Middleware
 

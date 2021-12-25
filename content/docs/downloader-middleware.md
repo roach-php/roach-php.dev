@@ -75,7 +75,7 @@ class MyRequestMiddleware implements RequestMiddlewareInterface
 
 </CodeBlock>
 
-Dropping a request prevents any further downloader middleware from running and the request will not get send. It will also fire a [`RequestDropped`](/docs/extensions#request-dropped) event which you can subscribe to in an [extension](/docs/extensions).
+Dropping a request prevents any further downloader middleware from running and the request will not get send. It will also fire a [`RequestDropped`](/docs/extensions#requestdropped) event which you can subscribe to in an [extension](/docs/extensions).
 
 ### Response Middleware
 
@@ -122,7 +122,7 @@ class MyResponseMiddleware implements ResponseMiddlewareInterface
 
 </CodeBlock>
 
-Dropping a response prevents any further downloader middleware from being run and the response will not get passed to the spider. Roach will fire a [`ResponseDropped`](/docs/extensions#response-dropped) event which we can subscribe on in an [extension](/docs/extensions#writing-extensions).
+Dropping a response prevents any further downloader middleware from being run and the response will not get passed to the spider. Roach will fire a [`ResponseDropped`](/docs/extensions#responsedropped) event which we can subscribe on in an [extension](/docs/extensions#writing-extensions).
 
 #### Accessing the Request
 

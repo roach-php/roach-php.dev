@@ -11,6 +11,13 @@ export default {
       lang: "en",
       class: "h-full [--scroll-mt:9rem]",
     },
+    script: [
+      {
+        src: "https://cdn.usefathom.com/script.js", 
+        "data-site": "LPISCBAQ" ,
+        defer: "true",
+      }
+    ],
     bodyAttrs: {
       class: "bg-gray-50",
     },

@@ -77,8 +77,12 @@ import { SidebarSection as Section } from "../../components/SidebarSection.vue";
 export default Vue.extend({
   head() {
     return {
-      // @ts-ignore
-      title: `${this.page.title} — Roach PHP`,
+      title:
+        // @ts-ignore
+        this.page.slug === "introduction"
+          ? "Roach PHP"
+          : // @ts-ignore
+            `${this.page.title} — Roach PHP`,
     };
   },
   async asyncData({ $content, params }) {

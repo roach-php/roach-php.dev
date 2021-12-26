@@ -88,17 +88,24 @@ class MySpider extends BasicSpider
 
 Roach will send a request to each URL defined in this array and call the `parse` method for each respective response.
 
-### Dynamically defining starting URLs
+### Manually Creating the Request Objects
 
-Sometimes we may have to dynamically define our spider’s seeds. A possible example could be that we want to start our crawl on a page that contains today’s date in its URL. Since we can’t hardcode this date, we have to determine it at runtime.
+While using the `$startUrls` property is very convenient, it makes a few assumptions:
 
-In these cases we can override the `getStartUrls()` method of the `AbstractSpider` class.
+- it assumes that all requests are to be sent as `GET` requests,
+- it assumes that the initial requests will get processed by the `parse` method of our spider
+
+Since `$startUrls` is a property, we can only define static values in it. We can’t add dynamic parts to the URLs like the current date, for example.
+
+If we need complete control over the requests that get created, we can override the `initialRequests` method on the spider, instead.
 
 <CodeBlock>
 
 ```php
 <?php
 
+use Datetime;
+use RoachPHP\Http\Request;
 use RoachPHP\Http\Response;
 use RoachPHP\Spider\BasicSpider;
 
@@ -107,21 +114,93 @@ class MySpider extends BasicSpider
     public function parse(Response $response): \Generator
     { /* ... */ }
 
-    /**
-     * @return string[]
-     */
-    protected function getStartUrls(): array
+    /** @return Request[] */
+    protected function initialRequests(): array
     {
         $yesterday = (new DateTime('yesterday'))->format('Y/m/d');
 
         return [
-            "https://fussballdaten.de/kalender/{$yesterday}"
+            new Request(
+                "https://fussballdaten.de/kalender/{$yesterday}",
+                [$this, 'parse']
+            ),
         ];
     }
 }
 ```
 
 </CodeBlock>
+
+The `initialRequests` method needs to return an array of `Request` objects. Since we can now directly instantiate `Request` objects, we are free to configure these requests however we want. In the example above, we’re setting the start URL to a dynamic value based on the current date.
+
+The `Request` class has the following constructor:
+
+<CodeBlock>
+
+```php
+Request::__construct(
+    string $uri,
+    callable $parseMethod,
+    string $method = 'GET'
+)
+```
+
+</CodeBlock>
+
+Using the `initialRequests` method, we could also provide a different parse method for the initial requests as well. 
+
+<CodeBlock>
+
+```php
+<?php
+
+use RoachPHP\Http\Request;
+use RoachPHP\Spider\BasicSpider;
+
+class RoachDocsSpider extends BasicSpider
+{
+	public function parseOverview(Response $response): \Generator
+    {
+        // We’re only interested in the overview page 
+        // because we can extract the links we’re 
+        // actually interested in from it.
+        $pages = $response
+            ->filter('main > div:first-child a')
+            ->links();
+        
+        foreach ($pages as $page) {
+            // Since we’re not specifying the second parameter, 
+            // all article pages will get handled by the 
+            // spider’s `parse` method.
+            yield $this->request($article->getUri());
+        }
+    }
+    
+    public function parse(Response $response): \Generator
+    {
+        // Akshually parse the subpages...
+    }
+
+    /** @return Request[] */
+    protected function initialRequests(): array
+    {
+        return [
+            new Request(
+                "https://roach-php.dev",
+                // Specify a different parse method for 
+                // the intial request.
+                [$this, 'parseOverview']
+            ),
+        ];
+    }
+}
+```
+
+</CodeBlock>
+
+This pattern can be useful when we don’t know the URLs we want to crawl ahead of time. Think of a news site with the current stories on the front page. We could define the initial request of our spider to crawl the front page and extract the URLs to the actual stories from it. Then, we send requests to each of these pages to scrape them.
+
+What makes this so clean is that we’re able to define a different parsing method for both kinds of requests. The logic to extract URLs from the front page is completely different than scraping an actual article. Imagine having to do both of these things in a single method. It would be madness! Madness, I say!
 
 ## Configuring Spiders
 

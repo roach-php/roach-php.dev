@@ -152,6 +152,10 @@ export default Vue.extend({
               to: "/docs/extensions",
             },
             {
+              label: "Configuring Middleware and Extensions",
+              to: "/docs/configuring-middleware-and-extensions",
+            },
+            {
               label: "Dependency Injection",
               to: "/docs/dependency-injection",
             },

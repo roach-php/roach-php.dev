@@ -160,3 +160,9 @@ To avoid sending duplicate requests, we can register the `RoachPHP\Downloader\Mi
 | `ignore_query_string`     | `false` | Whether or not the query string should be ignored when comparing URLs. When set to `true` it will completely ignore the query string, so it will consider two URLs to be identical if they contain all the same key-value pairs in the query, regardless of order. |
 
 Using this middleware is recommended for most use-cases as it allows you to write your spider in a very naive way without having to worry about bombarding the server with duplicate requests.
+
+### Managing Cookies
+
+Roach can automatically keep track of cookies for us if we register the built-in `RoachPHP\Downloader\Middleware\CookieMiddleware`. This middleware extracts the `Set-Cookie` header from every response and sends them back in subsequent requests, just like a browser does.
+
+Be aware that Roach currently uses a shared cookie jar for all requests and responses of a run. This means having multiple session cookies for the same domain is currently unsupported.

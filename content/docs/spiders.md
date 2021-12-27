@@ -121,6 +121,7 @@ class MySpider extends BasicSpider
 
         return [
             new Request(
+                'GET',
                 "https://fussballdaten.de/kalender/{$yesterday}",
                 [$this, 'parse']
             ),
@@ -139,13 +140,16 @@ The `Request` class has the following constructor:
 
 ```php
 Request::__construct(
+    string $method,
     string $uri,
     callable $parseMethod,
-    string $method = 'GET'
-)
+    array $options = [],
+);
 ```
 
 </CodeBlock>
+
+The `$options` parameter takes an array of [Guzzle request options](https://docs.guzzlephp.org/en/latest/request-options.html) which allows us to configure the underlying Guzzle request directly, if that’s the flexibility we need.
 
 Using the `initialRequests` method, we could also provide a different parse method for the initial requests as well. 
 
@@ -172,7 +176,7 @@ class RoachDocsSpider extends BasicSpider
             // Since we’re not specifying the second parameter, 
             // all article pages will get handled by the 
             // spider’s `parse` method.
-            yield $this->request($article->getUri());
+            yield $this->request('GET', $article->getUri());
         }
     }
     
@@ -186,7 +190,8 @@ class RoachDocsSpider extends BasicSpider
     {
         return [
             new Request(
-                "https://roach-php.dev",
+                'GET',
+                'https://roach-php.dev',
                 // Specify a different parse method for 
                 // the intial request.
                 [$this, 'parseOverview']

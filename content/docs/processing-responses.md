@@ -159,19 +159,20 @@ public function parse(Response $response): \Generator
     $links = $response->filter('nav a')->links();
 
     foreach ($links as $link) {
-        yield $this->request($link->getUrl());
+        yield $this->request('GET', $link->getUrl());
     }
 }
 ```
 
 </CodeBlock>
 
-The `$this->request()` method takes in the URL and returns a new `ParseResult` object representing a request to a page that should be crawled next.
+The `$this->request()` method takes in the HTTP method and URL and returns a new `ParseResult` object representing a request to a page that should be crawled next.
 
 <CodeBlock>
 
 ```php
 BasicSpider::request(
+    string $method,
     string $uri,
     string $parseMethod = 'parse'
 ): ParseResult
@@ -181,13 +182,19 @@ BasicSpider::request(
 
 Yielding a request object from our parse method tells Roach that we intend to crawl this URL as well. This won’t immediately send the request, however, but instead schedule it to run after the current batch of requests has been processed.
 
-### Defining different parse methods
+### Defining Different Parse Methods
 
-By default, Roach will call the `parse` method of your spider to process a request’s response. However, it can often be desireable, to use different callbacks for different requests. We can do so by passing the name of the method as the second parameter to `$this->request()`.
+By default, Roach will call the `parse` method of your spider to process a request’s response. However, it can often be desirable to use different callbacks for different requests. We can do so by passing the name of the method as the second parameter to `$this->request()`.
 
 <CodeBlock>
 
 ```php
+<?php
+    
+use Generator;
+use RoachPHP\Http\Response;
+use RoachPHP\Spider\BasicSpider;
+
 class BlogSpider extends BasicSpider
 {
     public array $startUrls = [
@@ -199,7 +206,7 @@ class BlogSpider extends BasicSpider
         $links = $response->filter('header + div a')->links();
 
         foreach ($links as $link) {
-            yield $this->request($link->getUri(), 'parseBlogPage');
+            yield $this->request('GET', $link->getUri(), 'parseBlogPage');
         }
     }
 
@@ -221,6 +228,47 @@ class BlogSpider extends BasicSpider
 </CodeBlock>
 
 In this example, Roach will send an initial request to `https://kai-sassnowski.com` since that’s the only URL defined in `$startUrls`. The response of this request will get passed to the `parse` method which in turn dispatches several new request. The responses of these requests will then get passed to the `parseBlogPage` method, since that’s the method we specified when yielding the requests.
+
+### Returning Custom Requests
+
+While the `request()` method is convenient, it makes a few assumptions about the kind of request that gets created. For instance, it will always return a `GET` request. We also cannot pass any options to the underlying Guzzle request.
+
+If we need complete control over the kind of request that gets created, we can instead return a `ParseResult` object ourselves using the `ParseResult::fromValue` constructor.
+
+<CodeBlock>
+
+```php
+ParseResult::fromValue(Request|ItemInterface $value): ParseResult;
+```
+
+</CodeBlock>
+
+This method accepts either a `Request` object or an object implementing the `ItemInterface`. Using this, we can create a completely custom request from our parse callback.
+
+<CodeBlock>
+
+```php
+public function parse(Response $response): Generator
+{
+    $request = new Request(
+        'POST',
+        'https://example.com',
+        [$this, 'parsePostRequest'],
+        [
+            'json' => [
+                'foo' => 'bar',
+            ],
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
+        ],
+    );
+    
+    yield ParseResult::fromValue($request);
+}
+```
+
+</CodeBlock>
 
 ## Extracting Items
 

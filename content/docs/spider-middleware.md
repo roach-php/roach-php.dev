@@ -82,6 +82,10 @@ class MyResponseMiddleware implements ResponseMiddlewareInterface
 
 Dropping a response will prevent any further spider middleware from being called and the response will not get passed to the spider for processing .Roach will also fire a [`ResponseDropped`](/docs/extensions#responsedropped) event which we can subscribe on in an [extension](/docs/extensions#writing-extensions).
 
+#### Defining Configuration Options
+
+Check out the dedicated page about [configuring middleware and extensions](/docs/configuring-middleware-and-extensions) to learn how to define configuration options for our middleware.
+
 ### Request Middleware
 
 Spider middleware that deal with requests emitted by the spider during processing are response have to implement the `RequestMiddlewareInterface`.
@@ -178,6 +182,10 @@ class MyRequestMiddleware implements RequestMiddlewareInterface
 
 Dropping a request will prevent any further spider middleware from running and the request will not get scheduled. Roach will also fire a [`RequestDropped`](/docs/extensions#requestdropped) event which we can subscribe on in an [extension](/docs/extensions#writing-extensions).
 
+#### Defining Configuration Options
+
+Check out the dedicated page about [configuring middleware and extensions](/docs/configuring-middleware-and-extensions) to learn how to define configuration options for our middleware.
+
 ### Item Middleware
 
 Spider middleware that deal with items emitted by the spider’s parse callback have to implement the `ItemMiddlewareInterface`. Item middleware gets called _before_ the item gets sent through the [processing pipeline](/docs/processing-responses).
@@ -228,6 +236,10 @@ class MyItemMiddleware implements ItemMiddlewareInterface
 </CodeBlock>
 
 Dropping an item will prevent any further spider middleware from running and the item will not get passed through the [processing pipeline](/docs/item-pipeline). Roach will also fire an [`ItemDropped`](/docs/extensions#itemdropped) event which we can subscribe on in an [extension](/docs/extensions#writing-extensions).
+
+#### Defining Configuration Options
+
+Check out the dedicated page about [configuring middleware and extensions](/docs/configuring-middleware-and-extensions) to learn how to define configuration options for our middleware.
 
 ## Built-in Middleware
 

@@ -77,6 +77,10 @@ class MyRequestMiddleware implements RequestMiddlewareInterface
 
 Dropping a request prevents any further downloader middleware from running and the request will not get send. It will also fire a [`RequestDropped`](/docs/extensions#requestdropped) event which you can subscribe to in an [extension](/docs/extensions).
 
+#### Defining Configuration Options
+
+Check out the dedicated page about [configuring middleware and extensions](/docs/configuring-middleware-and-extensions) to learn how to define configuration options for our middleware.
+
 ### Response Middleware
 
 Downloader middleware that deal with responses need to implement `ResponseMiddlewareInterface`.
@@ -136,6 +140,10 @@ $response->getRequest();
 ```
 
 </CodeBlock>
+
+#### Defining Configuration Options
+
+Check out the dedicated page about [configuring middleware and extensions](/docs/configuring-middleware-and-extensions) to learn how to define configuration options for our middleware.
 
 ## Built-in Middleware
 

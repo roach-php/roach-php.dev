@@ -20,7 +20,7 @@ composer require roach-php/laravel
 
 </CodeBlock>
 
-Next, let’s publish the configuration file that comes with the package.
+We can also publish the configuration file that comes with the package.
 
 <CodeBlock>
 
@@ -31,16 +31,6 @@ php artisan vendor:publish --provider='RoachPHP\Laravel\RoachServiceProvider'
 </CodeBlock>
 
 This will publish a `roach.php` configuration file to our app’s `config` folder.
-
-## Configuring the package
-
-Most apps will be fine using the default configuration Roach uses out of the box. Nevertheless, let’s go through the configuration options available to us.
-
-### Logging
-
-Roach comes with a [`LoggerExtension`](/docs/extensions#logging) which logs useful information during a run. The extension uses our app’s logging configuration.
-
-_todo_
 
 ## Available Commands
 

@@ -1,10 +1,10 @@
 ---
 title: Roach PHP
 section: Getting Started
-subtitle: A complete webscraping toolkit for PHP
+subtitle: The complete webscraping toolkit for PHP
 ---
 
-Roach is a complete web scraping toolkit for PHP. It is ~~a shameless clone~~ heavily inspired by the popular [Scrapy](https://docs.scrapy.org) package for Python. 
+Roach is a complete web scraping toolkit for PHP. It is ~~a shameless clone~~ heavily inspired by the popular [Scrapy](https://docs.scrapy.org) package for Python.
 
 Roach allows us to define spiders that crawl and scrape web documents. But wait, there’s more. Roach isn’t just a simple crawler, but includes an entire pipeline to clean, persist and otherwise process extracted data as well. It’s your all-in-one resource for web scraping in PHP.
 
@@ -16,7 +16,7 @@ Roach doesn’t depend on a specific framework. Instead, you can use the core pa
 
 Roach is built from the ground up with extensibility in mind. In fact, most of Roach’s built-in behavior works the exact same way that any custom extensions or middleware works.
 
-Want to store the scraped information in your persistence of choice? Roach has got you covered, just write an appropriate [item processor](/docs/item-pipeline). 
+Want to store the scraped information in your persistence of choice? Roach has got you covered, just write an appropriate [item processor](/docs/item-pipeline).
 
 Want to add custom HTTP headers to every outgoing request based on some condition? Sure thing, sounds like a job for a [downloader middleware](/docs/downloader-middleware).
 

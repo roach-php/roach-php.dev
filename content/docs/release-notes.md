@@ -1,7 +1,13 @@
 ---
-title: Release Notes
+title: Releases
 section: Getting Started
 subtitle: Learn about what changed between releases of Roach.
 ---
 
-_No releases yet_
+## core
+
+- 0.1.0 (December 28, 2021) _Initial release_
+
+## laravel
+
+- 0.1.0 (December 28, 2021) _Initial release_

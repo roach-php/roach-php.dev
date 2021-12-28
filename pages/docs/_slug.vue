@@ -90,8 +90,8 @@ export default Vue.extend({
               to: "/docs/installation",
             },
             {
-              label: "Release notes",
-              to: "/docs/release-notes",
+              label: "Releases",
+              to: "/docs/releases",
             },
             {
               label: "Scraping versus Crawling",

@@ -36,7 +36,7 @@
           </svg>
         </button>
 
-        <SidebarNavigation :sections="sections" />
+        <SidebarNavigation />
       </div>
     </div>
   </div>
@@ -50,13 +50,6 @@ export default Vue.extend({
     return {
       show: false,
     };
-  },
-
-  props: {
-    sections: {
-      type: Array,
-      required: true,
-    },
   },
 
   computed: {

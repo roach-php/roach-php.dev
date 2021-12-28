@@ -63,17 +63,13 @@ import Vue from "vue";
 export default Vue.extend({
   head() {
     return {
-      title:
-        // @ts-ignore
-        this.page.slug === "introduction"
-          ? "Roach PHP"
-          : // @ts-ignore
-            `${this.page.title} — Roach PHP`,
+      // @ts-ignore
+      title: `${this.page.title} — Roach PHP`,
     };
   },
   async asyncData({ $content, params }) {
     const slug = params.slug || "index";
-    const page = await $content(`docs/${slug}`).fetch();
+    const page = await $content(`docs/releases/${slug}`).fetch();
 
     return { page };
   },

@@ -153,6 +153,8 @@ Roach ships with various built-in downloader middleware for common tasks when de
 
 In order to attach the same `User-Agent` header to every outgoing request, we can use the `RoachPHP\Downloader\Middleware\UserAgentMiddleware` middleware.
 
+#### Configuration Options
+
 | Name        | Default     | Description                                              |
 | ----------- | ----------- | -------------------------------------------------------- |
 | `userAgent` | `roach-php` | The user agent to attach to every outgoing HTTP request. |
@@ -160,6 +162,8 @@ In order to attach the same `User-Agent` header to every outgoing request, we ca
 ### Request Deduplication
 
 To avoid sending duplicate requests, we can register the `RoachPHP\Downloader\Middleware\RequestDeduplicationMiddleware` for our spider. Any request to a URL that has already been crawled or scheduled during the same run will be dropped.
+
+#### Configuration Options
 
 | Name                      | Default | Description                                                  |
 | ------------------------- | ------- | ------------------------------------------------------------ |
@@ -180,3 +184,30 @@ Be aware that Roach currently uses a shared cookie jar for all requests and resp
 If we want to write a good spider, it’s a good idea to respect the `robots.txt` directives of the sites we’re crawling. Roach comes with a `RoachPHP\Downloader\Middleware\RobotsTxtMiddleware` which compares every request against the site’s `robots.txt` (if there is one) and drops the request if we’re not allowed to index the page.
 
 Since this middleware uses [`spatie/robots-txt`](https://github.com/spatie/robots-txt) beind the scenes, it will also inspect the page’s meta tags as well as response headers.
+
+### Executing Javascript
+
+Many sites don’t directly return the final HTML but depend on some Javascript being run first. To deal with this, Roach includes a `RoachPHP\Downloader\Middleware\ExecuteJavascriptMiddleware`  we can use in our spider. 
+
+This middleware will intercept every response and swap out its body with the body returned after executing Javascript. This means that in our spider, we don’t have to care about whether or not Javascript needed to be run or not. We can simply writing our scraper as if we’re dealing with static HTML.
+
+#### Prerequisites
+
+This middleware uses the [`spatie/browsershot`](https://github.com/spatie/browsershot) package behind the scenes to execute Javascript. This package, in turn, uses [Puppeteer](https://github.com/GoogleChrome/puppeteer) which controls a headless Chrome instance. This means that we need to ensure that `puppeteer` is installed on our system.
+
+Check out the [requirements](https://github.com/spatie/browsershot#requirements) section of `spatie/browsershot` for more information on how to install Puppeteer for your system.
+
+#### Configuration Options
+
+Most of the middleware’s configuration options will configure the underlying Browsershot instance. Check out the [Browsershot documentation](https://github.com/spatie/browsershot#custom-node-and-npm-binaries) for a more complete description of what each of the configuration values do.
+
+| Name                | Default | Description                                                  |
+| ------------------- | ------- | ------------------------------------------------------------ |
+| `chromiumArguments` | `[]`    | Custom arguments which will get passed to Chromium. Corresponds to [`Browsershot::addChromiumArguments`](https://github.com/spatie/browsershot#pass-custom-arguments-to-chromium). |
+| `chromePath`        | `null`  | Custom path to a Chrome or Chromium executable. Will default to the executable installed by Puppeteer. Corresponds to [`Browsershot::setCromePath`](https://github.com/spatie/browsershot#custom-chromechromium-executable-path). |
+| `binPath`           | `null`  | Custom script path which get executed instead of Browsershot’s default script. Corresponds to [`Browsershot::setBinPath`](https://github.com/spatie/browsershot#custom-binary-path). |
+| `nodeModulePath`    | `null`  | Path to an alternative `node_modules` folder to use. Corresponds to [`Browsershot::setNodeModulePath`](https://github.com/spatie/browsershot#custom-node-module-path). |
+| `includePath`       | `null`  | Overrides the `PATH` environment variable Browsershot uses to find executables. This is an alternative to specifying paths to the various executables individually. Corresponds to [`Browsershot::setIncludePath`](https://github.com/spatie/browsershot#custom-include-path). |
+| `nodeBinary`        | `null`  | Custom path to the `node` executable. Corresponds to [`Browsershot::setNodeBinary`](https://github.com/spatie/browsershot#custom-node-and-npm-binaries). |
+| `npmBinary`         | `null`  | Custom path to the `npm` executable. Corresponds to [`Browsershot::setNpmBinary`](https://github.com/spatie/browsershot#custom-node-and-npm-binaries). |
+

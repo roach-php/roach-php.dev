@@ -174,3 +174,9 @@ Using this middleware is recommended for most use-cases as it allows you to writ
 Roach can automatically keep track of cookies for us if we register the built-in `RoachPHP\Downloader\Middleware\CookieMiddleware`. This middleware extracts the `Set-Cookie` header from every response and sends them back in subsequent requests, just like a browser does.
 
 Be aware that Roach currently uses a shared cookie jar for all requests and responses of a run. This means having multiple session cookies for the same domain is currently unsupported.
+
+### Respecting Robots.txt
+
+If we want to write a good spider, it’s a good idea to respect the `robots.txt` directives of the sites we’re crawling. Roach comes with a `RoachPHP\Downloader\Middleware\RobotsTxtMiddleware` which compares every request against the site’s `robots.txt` (if there is one) and drops the request if we’re not allowed to index the page.
+
+Since this middleware uses [`spatie/robots-txt`](https://github.com/spatie/robots-txt) beind the scenes, it will also inspect the page’s meta tags as well as response headers.

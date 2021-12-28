@@ -310,7 +310,7 @@ This process is identical for `$spiderMiddleware`, `$itemProcessors` and `$exten
 
 ## Running Spiders
 
-After we have set up our spider, it’s finally time to run it. Luckily, Roach makes this super easy. All we have to do is pass the class name of our spider to the static `Roach::run()` method and Roach will take care of the rest.
+After we have set up our spider, it’s finally time to run it. Luckily, Roach makes this super easy. All we have to do is pass the class name of our spider to the static `Roach::startSpider()` method and Roach will take care of the rest.
 
 <CodeBlock>
 
@@ -320,7 +320,7 @@ After we have set up our spider, it’s finally time to run it. Luckily, Roach m
 use App\Spiders\MySpider;
 use RoachPHP\Roach;
 
-Roach::run(MySpider::class);
+Roach::startSpider(MySpider::class);
 ```
 
 </CodeBlock>

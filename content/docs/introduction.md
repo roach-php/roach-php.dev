@@ -22,4 +22,4 @@ Want to add custom HTTP headers to every outgoing request based on some conditio
 
 Post a message into the company Slack after a run was finished to gloat about how great your spider works? I... guess you could write an [extension](/docs/extension) for that and listen on the corresponding event.
 
-Crush your enemys and hear the lamentations of their women? Sir, this is a Wendy’s.
+Crush your enemies and hear the lamentations of their women? Sir, this is a Wendy’s.

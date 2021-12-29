@@ -1,5 +1,5 @@
 ---
-title: laravel@0.2.0
+title: core@0.2.0
 section: Releases
 subtitle: Released on December 28, 2021
 ---

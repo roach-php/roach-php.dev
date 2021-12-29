@@ -72,9 +72,9 @@ class MinimumScoredGoalsProcessor implements ItemProcessorInterface
     {
       	$totalGoals = $item->get('awayGoals', 0) + $item->get('homeGoals', 0);
 
-      	if ($totalGoals < $this->options['threshold']) {
+      	if ($totalGoals < $this->option('threshold')) {
           	return $item->drop(
-                sprintf('Fewer than %s goals scored', $this->options['threshold'])
+                sprintf('Fewer than %s goals scored', $this->option('threshold'))
           	);
         }
 

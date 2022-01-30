@@ -326,3 +326,63 @@ Roach::startSpider(MySpider::class);
 </CodeBlock>
 
 If that’s not the coolest thing you’ve ever seen, your life is probably not nearly as boring as mine!
+
+### Overriding Spider Configuration
+
+Sometimes, it can be useful to override parts of a spider’s configuration only for a single run. For example, you might want to start a spider run based on some user input or enable a specific extension while debugging.
+
+We can achieve this without changing the default spider configuration by passing an `Overrides` object as the second parameter to the `Roach::startSpider` method.
+
+<CodeBlock>
+
+```php
+<?php
+
+use RoachPHP\Spider\Configuration\Overrides;
+    
+Roach::startSpider(
+    MySpider::class,
+    new Overrides(startUrls: ['https://my-override-url.com']),
+);
+```
+
+</CodeBlock>
+
+The `Overrides` object’s constructor accepts the configuration options that our spider class does.
+
+<CodeBlock>
+
+```php
+<?php
+    
+final class Overrides
+{
+	public function __construct(
+     	public ?array $startUrls = null,
+     	public ?array $downloaderMiddleware = null,
+     	public ?array $spiderMiddleware = null,
+     	public ?array $itemProcessors = null,
+    	public ?array $extensions = null,
+     	public ?int $concurrency = null,
+        public ?int $requestDelay = null,
+    ) {
+    }
+}
+```
+
+</CodeBlock>
+
+Any overrides passed to `Roach::startSpider` will get merged with the spider’s default configuration before the run is started. If we don’t want to override certain options, we can either explicitly pass `null` to the constructor, or use name arguments to skip them entirely.
+
+<CodeBlock>
+
+```php
+Roach::startSpider(
+    MySpider::class,
+    // Only override `requestDelay`. Use spider defaults for
+    // everything else.
+    new Overrides(requestDelay: 2),
+);
+```
+
+</CodeBlock>

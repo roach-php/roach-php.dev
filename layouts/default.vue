@@ -1,6 +1,8 @@
 <template>
   <div style="flex: 1 0 auto" class="antialiased">
     <Nuxt />
+
+    <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@alpha"></script>
   </div>
 </template>
 

@@ -61,7 +61,7 @@ Say we want to write a processor that filters out items based on a minimum value
 <?php
 
 use RoachPHP\ItemPipeline\ItemInterface;
-use RoachPHP\ItemPipeline\ItemProcessorInterface;
+use RoachPHP\ItemPipeline\Processors\ItemProcessorInterface;
 use RoachPHP\Support\Configurable;
 
 class MinimumScoredGoalsProcessor implements ItemProcessorInterface
@@ -144,7 +144,7 @@ We can stop an item from being processed further by calling the `drop()` method 
 <?php
 
 use RoachPHP\ItemPipeline\ItemInterface;
-use RoachPHP\ItemPipeline\ItemProcessorInterface;
+use RoachPHP\ItemPipeline\Processors\ItemProcessorInterface;
 use RoachPHP\Support\Configurable;
 
 class ValidateMatchProcessor implements ItemProcessorInterface
@@ -196,7 +196,7 @@ Roach uses a [dependency injection container](/docs/dependency-injection) behind
 
 use App\Repository\MatchRepository;
 use RoachPHP\ItemPipeline\ItemInterface;
-use RoachPHP\ItemPipeline\ItemProcessorInterface;
+use RoachPHP\ItemPipeline\Processors\ItemProcessorInterface;
 use RoachPHP\Support\Configurable;
 
 class SaveMatchToDatabaseProcessor implements ItemProcessorInterface

@@ -21,5 +21,3 @@ Want to store the scraped information in your persistence of choice? Roach has g
 Want to add custom HTTP headers to every outgoing request based on some condition? Sure thing, sounds like a job for a [downloader middleware](/docs/downloader-middleware).
 
 Post a message into the company Slack after a run was finished to gloat about how great your spider works? I... guess you could write an [extension](/docs/extensions) for that and listen on the corresponding event.
-
-Crush your enemies and hear their lamentations? Um, this is a Wendy’s.

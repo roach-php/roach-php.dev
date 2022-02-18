@@ -176,7 +176,7 @@ class RoachDocsSpider extends BasicSpider
             // Since we’re not specifying the second parameter, 
             // all article pages will get handled by the 
             // spider’s `parse` method.
-            yield $this->request('GET', $article->getUri());
+            yield $this->request('GET', $page->getUri());
         }
     }
     

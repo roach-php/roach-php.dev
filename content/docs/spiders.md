@@ -50,7 +50,7 @@ Here’s how this spider will be processed:
 1. Roach starts by sending requests to all URLs defined inside the `$startUrls` property of the spider. In our case, there’s only the single URL `https://roach-php.dev/docs/spiders`.
 1. The response of each request gets passed to the `parse` method of the spider.
 1. Inside the `parse` method, we filter the response using CSS selectors to extract both the title and subtitle. Check out the page on [scraping responses](/docs/processing-responses) for more information.
-1. We then `yield` and item from our method by calling `$this->item(...)` and passing in array of our data.
+1. We then `yield` an item from our method by calling `$this->item(...)` and passing in array of our data.
 1. The item will then get sent through the [item processing pipeline](/docs/item-pipeline).
 1. Since there are no further requests to be sent, the spider closes.
 

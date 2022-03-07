@@ -97,6 +97,10 @@ export default Vue.extend({
               label: "Laravel",
               to: "/docs/laravel",
             },
+            {
+              label: "Symfony",
+              to: "/docs/symfony",
+            },
           ],
         },
       ] as Array<Section>,

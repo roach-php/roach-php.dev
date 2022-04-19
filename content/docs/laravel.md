@@ -66,6 +66,42 @@ php artisan roach:shell https://roach-php.dev/docs/introduction
 
 Check out the [shell documentation](/docs/repl) to learn more.
 
+### Running a Spider
+
+To start a run for a given spider directly from the CLI, we can use the `roach:run` command and pass it the name of our spider.
+
+<CodeBlock>
+
+```bash
+php artisan roach:run MySpider
+```
+
+</CodeBlock>
+
+By default, this will prefix the name of our spider with the default namespace configured by the [`default_spider_namespace`](/docs/laravel#changing-the-default-namespace) option. 
+
+It’s also possible to pass in a relative namespace.
+
+<CodeBlock>
+
+```bash
+php artisan roach:run Secret\\MySpider
+```
+
+</CodeBlock>
+
+Assuming the `default_spider_namespace` is `App\Spiders`, this would try and find the corresponding spider class at `App\Spiders\Secret\MySpider`.
+
+If we pass in the fully qualified name of an existing spider class, the default namespace will get ignored.
+
+<CodeBlock>
+
+```bash
+php artisan roach:run App\\Domain\\Scraping\\Spiders\\MySpider
+```
+
+</CodeBlock>
+
 ## Configuration
 
 We can change Roach’s default settings in the `roach.php` config file.

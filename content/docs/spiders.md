@@ -325,6 +325,18 @@ Roach::startSpider(MySpider::class);
 
 </CodeBlock>
 
+### Starting a Spider from the CLI
+
+To start a spider directly from the CLI, we can use the `roach:run` command and pass it the fully-qualified name of our spider.
+
+<CodeBlock>
+
+```bash
+vendor/bin/roach roach:run App\\Spiders\\MySpider
+```
+
+</CodeBlock>
+
 ### Retrieving Scraped Items After a Run
 
 The `startSpider` method does not have a return value. If we want to get back all items that were scraped during a run, we can use the `Roach::collectSpider()` method instead.

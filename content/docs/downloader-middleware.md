@@ -187,13 +187,23 @@ Since this middleware uses [`spatie/robots-txt`](https://github.com/spatie/robot
 
 ### Executing Javascript
 
-Many sites don’t directly return the final HTML but depend on some Javascript being run first. To deal with this, Roach includes a `RoachPHP\Downloader\Middleware\ExecuteJavascriptMiddleware`  we can use in our spider. 
+Many sites don’t directly return the final HTML but depend on some Javascript being run first. To deal with this, Roach includes a `RoachPHP\Downloader\Middleware\ExecuteJavascriptMiddleware`  we can use in our spider.
 
 This middleware will intercept every response and swap out its body with the body returned after executing Javascript. This means that in our spider, we don’t have to care about whether or not Javascript needed to be run or not. We can simply writing our scraper as if we’re dealing with static HTML.
 
 #### Prerequisites
 
-This middleware uses the [`spatie/browsershot`](https://github.com/spatie/browsershot) package behind the scenes to execute Javascript. This package, in turn, uses [Puppeteer](https://github.com/GoogleChrome/puppeteer) which controls a headless Chrome instance. This means that we need to ensure that `puppeteer` is installed on our system.
+In order to use this middleware, we first need to require the [`spatie/browsershot`](https://github.com/spatie/browsershot) package in our application.
+
+<CodeBlock>
+
+```bash
+composer require spatie/browsershot
+```
+
+</CodeBlock>
+
+The middleware uses this package behind the scenes to execute Javascript. This package, in turn, uses [Puppeteer](https://github.com/GoogleChrome/puppeteer) which controls a headless Chrome instance. This means that we need to ensure that `puppeteer` is installed on our system.
 
 Check out the [requirements](https://github.com/spatie/browsershot#requirements) section of `spatie/browsershot` for more information on how to install Puppeteer for your system.
 

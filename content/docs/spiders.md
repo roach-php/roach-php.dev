@@ -325,7 +325,29 @@ Roach::startSpider(MySpider::class);
 
 </CodeBlock>
 
-If that’s not the coolest thing you’ve ever seen, your life is probably not nearly as boring as mine!
+### Retrieving Scraped Items After a Run
+
+The `startSpider` method does not have a return value. If we want to get back all items that were scraped during a run, we can use the `Roach::collectSpider()` method instead.
+
+<CodeBlock>
+
+```php
+<?php
+    
+use App\Spiders\MySpider;
+use RoachPHP\Roach;
+
+// $items is an array<int, ItemInterface>
+$items = Roach::collectSpider(MySpider::class);
+```
+
+</CodeBlock>
+
+The return value of this method is an array of all scraped items our spider emitting during the run. Note that for an item to be considered _scraped_, it needs to have passed through the spider’s [item pipeline](/item-pipeline) successfully without getting dropped.
+
+Other than that, this method looks and behaves exactly the same as the `runSpider` method.
+
+> Fun fact: behind the scenes, Roach simply registers an additional extension for the spider run to keep track of all scraped items.
 
 ### Overriding Spider Configuration
 
@@ -383,6 +405,49 @@ Roach::startSpider(
     // everything else.
     new Overrides(requestDelay: 2),
 );
+```
+
+</CodeBlock>
+
+### Passing Additional Context to Spiders
+
+In order to pass arbitrary data into our spider when starting the run, we can provide the optional `$context` parameter to either `Roach::startSpider` or `Roach::collectSpider`.
+
+<CodeBlock>
+
+```php
+Roach::startSpider(
+    MySpider::class,
+    null,
+    ['some-key' => 'some-value'],
+);
+
+// Or use named parameters
+Roach::startSpider(
+    MySpider::class,
+    context: ['some-key' => 'some-value'],
+);
+```
+
+</CodeBlock>
+
+The `$context` array can contain arbitrary data and can be accessed via `$this->context` inside our spider.
+
+<CodeBlock>
+
+```php
+// Pass context when starting a run
+Roach::startSpider(MySpider::class, context: ['foo' => 'bar']);
+
+final class MySpider extends BasicSpider
+{
+    public function parse(Response $response): Generator
+    {
+        $value = $this->context['foo']; // "bar"
+        
+        // ...
+    }
+}
 ```
 
 </CodeBlock>

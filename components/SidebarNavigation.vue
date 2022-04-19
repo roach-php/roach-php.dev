@@ -35,6 +35,10 @@ export default Vue.extend({
               to: "/docs/releases",
             },
             {
+              label: "Upgrade Guide",
+              to: "/docs/upgrade-guide",
+            },
+            {
               label: "Scraping versus Crawling",
               to: "/docs/scraping-vs-crawling",
             },
@@ -87,6 +91,10 @@ export default Vue.extend({
             {
               label: "Dependency Injection",
               to: "/docs/dependency-injection",
+            },
+            {
+              label: "Testing",
+              to: "/docs/testing",
             },
           ],
         },

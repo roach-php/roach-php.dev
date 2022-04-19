@@ -10,6 +10,8 @@ The Laravel adapter mostly provides the necessary container bindings for the var
 
 ## Installing the Laravel Adapter
 
+> **Note:** The Laravel integration for Roach requires Laravel 9.x.
+
 Instead of installing the core Roach package, we are going to install Roach’s Laravel adapter.
 
 <CodeBlock>
@@ -63,3 +65,29 @@ php artisan roach:shell https://roach-php.dev/docs/introduction
 </CodeBlock>
 
 Check out the [shell documentation](/docs/repl) to learn more.
+
+## Configuration
+
+We can change Roach’s default settings in the `roach.php` config file.
+
+### Changing the Default Namespace
+
+Both the `roach:run` and `roach:spider` commands assume that our spider classes live in the `App\Spiders` namespace. To change this, we can update the `default_spider_namespace` configuration option.
+
+<CodeBlock>
+
+```php
+/*
+|--------------------------------------------------------------------------
+| Default Spider Namespace
+|--------------------------------------------------------------------------
+|
+| The default namespace the `roach:run` and `roach:spider` commands use
+| to determine the namespace of spider classes. This should not contain
+| leading or trailing backslashes.
+|
+*/
+'default_spider_namespace' => 'App\Spiders',
+```
+
+</CodeBlock>

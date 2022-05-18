@@ -205,7 +205,7 @@ composer require spatie/browsershot
 
 The middleware uses this package behind the scenes to execute Javascript. This package, in turn, uses [Puppeteer](https://github.com/GoogleChrome/puppeteer) which controls a headless Chrome instance. This means that we need to ensure that `puppeteer` is installed on our system.
 
-Check out the [requirements](https://github.com/spatie/browsershot#requirements) section of `spatie/browsershot` for more information on how to install Puppeteer for your system.
+Check out the [requirements](https://spatie.be/docs/browsershot/v2/requirements) section of `spatie/browsershot` for more information on how to install Puppeteer for your system.
 
 #### Configuration Options
 

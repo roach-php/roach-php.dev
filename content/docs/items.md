@@ -45,4 +45,4 @@ interface ItemInterface extends DroppableInterface, ArrayAccess
 
 </CodeBlock>
 
-Most of the time, you won’t directly create instances of an `Item`, but use the spider’s `item()` method instead. When writing [`ItemProcessors`](/docs/item-processors), however, this is the interface you will be dealing with.
+Most of the time, you won’t directly create instances of an `Item`, but use the spider’s `item()` method instead. When writing [`ItemProcessors`](/docs/item-pipeline), however, this is the interface you will be dealing with.

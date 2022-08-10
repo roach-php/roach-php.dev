@@ -357,7 +357,7 @@ $items = Roach::collectSpider(MySpider::class);
 
 The return value of this method is an array of all scraped items our spider emitting during the run. Note that for an item to be considered _scraped_, it needs to have passed through the spider’s [item pipeline](/item-pipeline) successfully without getting dropped.
 
-Other than that, this method looks and behaves exactly the same as the `runSpider` method.
+Other than that, this method looks and behaves exactly the same as the `startSpider` method.
 
 > Fun fact: behind the scenes, Roach simply registers an additional extension for the spider run to keep track of all scraped items.
 

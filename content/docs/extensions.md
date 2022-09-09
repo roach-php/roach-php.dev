@@ -35,7 +35,7 @@ class EmailDigestExtension implements ExtensionInterface
     public static function getSubscribedEvents(): array
     {
         return [
-        	RunFinished::class => ['onRunFinished', 100],  
+        	RunFinished::NAME => ['onRunFinished', 100],  
         ];
     }
     

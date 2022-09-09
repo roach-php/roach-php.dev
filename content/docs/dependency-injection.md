@@ -14,8 +14,6 @@ When integrating Roach into a project that already has dependency injection cont
 
 Here’s an example of how we can do this inside a [Laravel](https://laravel.com) app.
 
-<CodeBlock>
-
 ```php[AppServiceProvider.php]
 <?php
 
@@ -29,5 +27,3 @@ class AppServiceProvider extends ServiceProvider
     }
 }
 ```
-
-</CodeBlock>

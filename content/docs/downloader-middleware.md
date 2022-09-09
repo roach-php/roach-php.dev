@@ -10,8 +10,6 @@ Downloader middleware sits between the Roach engine and the **Downloader**. The 
 
 Downloader middleware are classes which implement `DownloaderMiddlewareInterface`. 
 
-<CodeBlock>
-
 ```php
 interface DownloaderMiddlewareInterface extends
     RequestMiddlewareInterface,
@@ -19,8 +17,6 @@ interface DownloaderMiddlewareInterface extends
 {
 }
 ```
-
-</CodeBlock>
 
 A downloader middleware deals with both outgoing requests as well as incoming responses. When writing downloader middleware, we often are interested in only one of these things, not both of them. For this reason, Roach splits these two concerns into two separate interfaces, `RequestMiddlewareInterface` and `ResponseMiddlewareInterface`, respectively.
 
@@ -30,16 +26,12 @@ The main `DownloaderMiddlewareInterface` is the combination of these two interfa
 
 Downloader middleware that process outgoing requests before they get sent need to implement `RequestMiddlewareInterface`.
 
-<CodeBlock>
-
 ```php
 interface RequestMiddlewareInterface extends ConfigurableInterface
 {
     public function handleRequest(Request $request): Request;
 }
 ```
-
-</CodeBlock>
 
 This interface defines a single method, `handleRequest`. This method will get called with the `Request` that’s about to be sent and is supposed to return another `Request` object.
 
@@ -50,8 +42,6 @@ Note that downloader request middleware gets run _after_ [spider request middlew
 #### Dropping Requests
 
 If we don’t want the request to get sent, we can drop it by calling the `Request` class’`drop` method and returning the result.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -73,8 +63,6 @@ class MyRequestMiddleware implements RequestMiddlewareInterface
 }
 ```
 
-</CodeBlock>
-
 Dropping a request prevents any further downloader middleware from running and the request will not get send. It will also fire a [`RequestDropped`](/docs/extensions#requestdropped) event which you can subscribe to in an [extension](/docs/extensions).
 
 #### Defining Configuration Options
@@ -85,16 +73,12 @@ Check out the dedicated page about [configuring middleware and extensions](/docs
 
 Downloader middleware that deal with responses need to implement `ResponseMiddlewareInterface`.
 
-<CodeBlock>
-
 ```php
 interface ResponseMiddlewareInterface extends ConfigurableInterface
 {
     public function handleResponse(Response $response): Response;
 }
 ```
-
-</CodeBlock>
 
 This interface defines a single method `handleResponse` which takes the `Response` object as a parameter and is supposed to return another `Response` object.
 
@@ -103,8 +87,6 @@ Downloader response middleware gets run immediately after a response was receive
 #### Dropping Responses
 
 To drop a response, we can call the `Response` class’`drop` method and return the result.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -124,22 +106,16 @@ class MyResponseMiddleware implements ResponseMiddlewareInterface
 }
 ```
 
-</CodeBlock>
-
 Dropping a response prevents any further downloader middleware from being run and the response will not get passed to the spider. Roach will fire a [`ResponseDropped`](/docs/extensions#responsedropped) event which we can subscribe on in an [extension](/docs/extensions#writing-extensions).
 
 #### Accessing the Request
 
 Every `Response` stores a reference to it’s corresponding `Request`. This allows us to keep track of information across the HTTP boundary. We can access the request through the `getRequest` method on the `Response`.
 
-<CodeBlock>
-
 ```php
 $response->getRequest();
 // => RoachPHP\Http\Request {#2666}
 ```
-
-</CodeBlock>
 
 #### Defining Configuration Options
 
@@ -195,13 +171,9 @@ This middleware will intercept every response and swap out its body with the bod
 
 In order to use this middleware, we first need to require the [`spatie/browsershot`](https://github.com/spatie/browsershot) package in our application.
 
-<CodeBlock>
-
 ```bash
 composer require spatie/browsershot
 ```
-
-</CodeBlock>
 
 The middleware uses this package behind the scenes to execute Javascript. This package, in turn, uses [Puppeteer](https://github.com/GoogleChrome/puppeteer) which controls a headless Chrome instance. This means that we need to ensure that `puppeteer` is installed on our system.
 

@@ -10,8 +10,6 @@ Spider middleware sits between Roach’s engine and our spiders. This middleware
 
 Spider middleware are classes which implement the `SpiderMiddlewareInterface`. Here’s what this interface looks like.
 
-<CodeBlock>
-
 ```php
 interface SpiderMiddlewareInterface extends
     ResponseMiddlewareInterface,
@@ -20,8 +18,6 @@ interface SpiderMiddlewareInterface extends
 {
 }
 ```
-
-</CodeBlock>
 
 As we can see, this interface combines three separate interfaces into one. This is because a spider middleware deals with three separate concerns:
 
@@ -41,8 +37,6 @@ Spider middleware that implement the `ResponseMiddlewareInterface` handle respon
 
 Here’s what the interface looks like.
 
-<CodeBlock>
-
 ```php
 interface ResponseMiddlewareInterface extends ConfigurableInterface
 {
@@ -50,15 +44,11 @@ interface ResponseMiddlewareInterface extends ConfigurableInterface
 }
 ```
 
-</CodeBlock>
-
 The `ResponseMiddlewareInterface` defines only a single `handleResponse` method that our middleware has to implement. This method accepts a `Response` object that was returned by the downloader and is supposed to return another `Response` object. Note that this `Response` has already been processed by any [downloader middleware](/docs/downloader-middleware) that was configured for the spider.
 
 #### Dropping Responses
 
 Since this method gets called _before_ the response gets passed to the spider’s parse callback, we can still drop the response at this point. To do so, we call the `drop()` method on the `Response` object and return it.
-
-<CodeBlock>
 
 ````php
 <?php
@@ -78,8 +68,6 @@ class MyResponseMiddleware implements ResponseMiddlewareInterface
 }
 ````
 
-</CodeBlock>
-
 Dropping a response will prevent any further spider middleware from being called and the response will not get passed to the spider for processing .Roach will also fire a [`ResponseDropped`](/docs/extensions#responsedropped) event which we can subscribe on in an [extension](/docs/extensions#writing-extensions).
 
 #### Defining Configuration Options
@@ -90,16 +78,12 @@ Check out the dedicated page about [configuring middleware and extensions](/docs
 
 Spider middleware that deal with requests emitted by the spider during processing are response have to implement the `RequestMiddlewareInterface`.
 
-<CodeBlock>
-
 ```php
 interface RequestMiddlewareInterface extends ConfigurableInterface
 {
     public function handleRequest(Request $request, Response $response): Request;
 }
 ```
-
-</CodeBlock>
 
 This interface specifies a single method `handleRequest` our middleware has to implement. This method takes two parameters:
 
@@ -109,8 +93,6 @@ This interface specifies a single method `handleRequest` our middleware has to i
 Having access to the previous response object is useful because it allows us to have access to context of the parent request. 
 
 To give an example how of this is useful, the built-in [`MaximumCrawlDepthMiddleware`](/docs/spider-middleware#limiting-the-maximum-crawl-depth) uses this request to determine the crawl depth of new requests by checking the crawl depth of its parent request.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -151,8 +133,6 @@ final class MaximumCrawlDepthMiddleware implements RequestMiddlewareInterface
 }
 ```
 
-</CodeBlock>
-
 #### Dropping Requests
 
 To drop requests, we can call the `drop` method on the `Request` object and returning it.
@@ -178,8 +158,6 @@ class MyRequestMiddleware implements RequestMiddlewareInterface
 }
 ```
 
-</CodeBlock>
-
 Dropping a request will prevent any further spider middleware from running and the request will not get scheduled. Roach will also fire a [`RequestDropped`](/docs/extensions#requestdropped) event which we can subscribe on in an [extension](/docs/extensions#writing-extensions).
 
 #### Defining Configuration Options
@@ -190,16 +168,12 @@ Check out the dedicated page about [configuring middleware and extensions](/docs
 
 Spider middleware that deal with items emitted by the spider’s parse callback have to implement the `ItemMiddlewareInterface`. Item middleware gets called _before_ the item gets sent through the [processing pipeline](/docs/processing-responses).
 
-<CodeBlock>
-
 ```php
 interface ItemMiddlewareInterface extends ConfigurableInterface
 {
     public function handleItem(ItemInterface $item, Response $response): ItemInterface;
 }
 ```
-
-</CodeBlock>
 
 This interface defines a single method `handleItem`. This method takes two parameters:
 
@@ -211,8 +185,6 @@ Examples of item middleware are adding additional meta data to items or dropping
 #### Dropping Items
 
 To drop an item, we can call the `drop` method on the item and then returning it.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -232,8 +204,6 @@ class MyItemMiddleware implements ItemMiddlewareInterface
     }
 }
 ```
-
-</CodeBlock>
 
 Dropping an item will prevent any further spider middleware from running and the item will not get passed through the [processing pipeline](/docs/item-pipeline). Roach will also fire an [`ItemDropped`](/docs/extensions#itemdropped) event which we can subscribe on in an [extension](/docs/extensions#writing-extensions).
 

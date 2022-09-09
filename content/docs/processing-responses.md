@@ -16,8 +16,6 @@ Roach comes with it’s own `Response` object which acts as a convenient facade 
 
 This response object is what gets passed to the parse method we specified when dispatching a request (`parse`, by default).
 
-<CodeBlock>
-
 ```php
 use RoachPHP\Http\Response;
 use RoachPHP\Spider\BasicSpider;
@@ -31,13 +29,9 @@ class MyNeatSpider extends BasicSpider
 }
 ```
 
-</CodeBlock>
-
 ### Storing Meta Data
 
 Both the `Response` as well as the `Request` object allow us to store and retrieve arbitrary meta data on them by using the `withMeta` and `getMeta` methods, respectively.
-
-<CodeBlock>
 
 ```php
 $responseWithMeta = $response->withMeta('depth', 1);
@@ -46,11 +40,7 @@ $responseWithMeta->getMeta('depth');
 // => 1
 ```
 
-</CodeBlock>
-
 Note that `withMeta` does _not_ mutate the original object, but returns a new instance with the additional meta data instead.
-
-<CodeBlock>
 
 ```php
 // The original object remains unchanged
@@ -58,28 +48,20 @@ $response->getMeta('depth');
 // => NULL
 ```
 
-</CodeBlock>
-
 ### Accessing the Request
 
 Every response also contains a reference to its corresponding `Request` object. We can access the request via the `getRequest` method.
-
-<CodeBlock>
 
 ```php
 $response->getRequest();
 // => RoachPHP\Http\Request {#2666}
 ```
 
-</CodeBlock>
-
 This can be useful because it allows us to access data from the request that triggered this response. Together with the ability to add meta data to these objects, this enables many cool use cases such as keeping track of the current crawl depth across the entire spider.
 
 ## Using Selectors
 
 We can use both CSS as well as XPath selectors for extracting data from the response body. We do so by calling either the `filter()` or `filterXPath` methods directly on the `Response` object.
-
-<CodeBlock>
 
 ```php
 $response->filter('h1')->text();
@@ -88,8 +70,6 @@ $response->filter('h1')->text();
 $response->filterXPath('//span[contains(@id, "such-wow")]')->text();
 // => "Wowzers!"
 ```
-
-</CodeBlock>
 
 Under the hood, Roach creates a `DomCrawler` object from the response body and proxies all method calls to it. Check out the full [DomCrawler documentation](https://symfony.com/doc/current/components/dom_crawler.html#usage) for a more thorough explanation.
 
@@ -103,8 +83,6 @@ The return value of our parsing callback tells Roach what to do next. There are 
 Roach represents both of these possibilities with a `ParseResult` object. This object can either represent a request that should be dispatched next or an item to processed. The result of our parse callback needs to be a `Generator<ParseResult>`, i.e. a `Generator` that produces instances of `ParseResult` objects. 
 
 Using a generator instead of just returning a value allows us to produce multiple `ParseResults` from the same callback. This might not sound like a big deal on the surface but is actually a really powerful feature. For example, we could extract the headline from a page first and send it through the item pipeline and then dispatch a request to continue crawling a detail page.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -141,8 +119,6 @@ class MySpider extends BasicSpider
 }
 ```
 
-</CodeBlock>
-
 Using generators allows us to both extract information from a page as well as dispatch additional requests to continue the crawl.
 
 Note how there is no mention of a `ParseResult` class in the example above. Most of the heavy lifting is done by two method calls that we’re going to look at next: `$this->item()` and `$this->request()`.
@@ -150,8 +126,6 @@ Note how there is no mention of a `ParseResult` class in the example above. Most
 ## Dispatching requests
 
 We often want to crawl additional pages based on the links we found on the current page. We can instruct Roach to do so by yielding a new request from our `parse` method.
-
-<CodeBlock>
 
 ```php
 public function parse(Response $response): \Generator
@@ -164,11 +138,7 @@ public function parse(Response $response): \Generator
 }
 ```
 
-</CodeBlock>
-
 The `$this->request()` method takes in the HTTP method and URL and returns a new `ParseResult` object representing a request to a page that should be crawled next.
-
-<CodeBlock>
 
 ```php
 BasicSpider::request(
@@ -178,15 +148,11 @@ BasicSpider::request(
 ): ParseResult
 ```
 
-</CodeBlock>
-
 Yielding a request object from our parse method tells Roach that we intend to crawl this URL as well. This won’t immediately send the request, however, but instead schedule it to run after the current batch of requests has been processed.
 
 ### Defining Different Parse Methods
 
 By default, Roach will call the `parse` method of your spider to process a request’s response. However, it can often be desirable to use different callbacks for different requests. We can do so by passing the name of the method as the second parameter to `$this->request()`.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -225,8 +191,6 @@ class BlogSpider extends BasicSpider
 }
 ```
 
-</CodeBlock>
-
 In this example, Roach will send an initial request to `https://kai-sassnowski.com` since that’s the only URL defined in `$startUrls`. The response of this request will get passed to the `parse` method which in turn dispatches several new request. The responses of these requests will then get passed to the `parseBlogPage` method, since that’s the method we specified when yielding the requests.
 
 ### Returning Custom Requests
@@ -235,17 +199,11 @@ While the `request()` method is convenient, it makes a few assumptions about the
 
 If we need complete control over the kind of request that gets created, we can instead return a `ParseResult` object ourselves using the `ParseResult::fromValue` constructor.
 
-<CodeBlock>
-
 ```php
 ParseResult::fromValue(Request|ItemInterface $value): ParseResult;
 ```
 
-</CodeBlock>
-
 This method accepts either a `Request` object or an object implementing the `ItemInterface`. Using this, we can create a completely custom request from our parse callback.
-
-<CodeBlock>
 
 ```php
 public function parse(Response $response): Generator
@@ -268,27 +226,19 @@ public function parse(Response $response): Generator
 }
 ```
 
-</CodeBlock>
-
 ## Extracting Items
 
 Ultimately, the goal of a spider is to extract information from a document. We can do so by [filtering the response](#using-selectors) using either CSS or XPath selectors as described in an earlier section. Once we have extracted the data, we want to send it through the [item pipeline](/docs/item-pipeline) so it may be processed further.
 
 To send an item through the item pipeline, we can use the `$this->item()` method on the base class.
 
-<CodeBlock>
-
 ```php
 BasicSpider::item(array $item): ParseResult
 ```
 
-</CodeBlock>
-
 This method produces a `ParseResult` representing an item to be sent through the [processing pipeline](/docs/item-pipeline). Items are simply bags of data, represented by an associative array. Behind the scenes, this array will get wrapped in an [`Item`](/docs/items) object so it can be worked with more easily than a plain array.
 
 Items can have as many entries as we want. Here’s an example of how we can produce an item containing the main headline of the page.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -309,11 +259,7 @@ class MySpider extends BasicSpider
 }
 ```
 
-</CodeBlock>
-
 Items aren’t limited to a single piece of information. We can just as easily yield an item that contains the headline, subtitle and excerpt, for example.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -336,7 +282,5 @@ class MySpider extends BasicSpider
     }
 }
 ```
-
-</CodeBlock>
 
 See the section about the [item processing pipeline](/docs/item-pipeline) to learn about what happens to items yielded from a spider.

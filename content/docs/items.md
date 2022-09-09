@@ -10,8 +10,6 @@ Items represent data that was extracted from documents. They are simple abstract
 
 Since an `Item` is just a simple wrapper around a plain PHP array, it has a rather straight-forward API.
 
-<CodeBlock>
-
 ```php
 <?php
   
@@ -42,7 +40,5 @@ interface ItemInterface extends DroppableInterface, ArrayAccess
   	public function has(string $key): bool;
 }
 ```
-
-</CodeBlock>
 
 Most of the time, you won’t directly create instances of an `Item`, but use the spider’s `item()` method instead. When writing [`ItemProcessors`](/docs/item-pipeline), however, this is the interface you will be dealing with.

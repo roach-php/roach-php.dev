@@ -10,8 +10,6 @@ All extensions and middleware in Roach provide a mechanism to pass configuration
 
 All middleware and extensions implement the `ConfigurableInterface`. This interface defines a single method `configure` which accepts an array of options.
 
-<CodeBlock>
-
 ```php
 interface ConfigurableInterface
 {
@@ -19,15 +17,11 @@ interface ConfigurableInterface
 }
 ```
 
-</CodeBlock>
-
 In order to make our classes configurable, we need to implement this interface and ensure that whatever options get passed in get merged correctly with any defaults that we defined.
 
 ## Defining Configuration Options
 
 Since we want the behavior of all configurable classes to be consistent with each other, the implementation of this interface is going to look the same for all middleware and extensions. For this reason, Roach comes with a handy `Configurable` trait that we can use in our classes to implement the `ConfigurableInterface`.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -41,8 +35,6 @@ class MyConfigurableClass implements ConfigurableInterface
 }
 ```
 
-</CodeBlock>
-
 <Callout>
 
 To keep this page as generic as possible, all examples directly implement the `ConfigurableInterface`. In practice, we will be implementing one of the [downloader middleware interfaces](/docs/downloader-middleware), [spider middleware interfaces](/docs/spider-middleware), or the [extension interface](/docs/extensions#writing-extensions), instead, all of which extend the `ConfigurableInterface`.
@@ -51,21 +43,15 @@ To keep this page as generic as possible, all examples directly implement the `C
 
 If we were to try and call the `configure` method now with any options, however, Roach would throw an exception. 
 
-<CodeBlock>
-
 ```php
 $myClass = new MyConfigurableClass();
 $myClass->configure(['option' => 'value']);
 // Boom!
 ```
 
-</CodeBlock>
-
 This is because any configuration options that our classes accept need to be explicitly declared. By default, all the `Configurable` trait does is provide a default implementation of the `ConfigurableInterface` that doesn’t accept any options. 
 
 In order to define the configuration options our class accepts, we need to override the `defaultOptions` method that comes with the trait.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -86,11 +72,7 @@ class MyConfigurableClass implements ConfigurableInterface
 }
 ```
 
-</CodeBlock>
-
 The `defaultOptions` method needs to return an associative array of option names and their corresponding default value. In the example above, we have defined an option called `timeout` with a default value of `5 * 60` (or 300 for those of you less mathematically inclined than myself).
-
-<CodeBlock>
 
 ```php
 $myClass = new MyConfigurableClass();
@@ -102,8 +84,6 @@ $myClass->configure([]);
 // Overriding the default value of the `timeout` option.
 $myClass->configure(['timeout' => 2 * 60]);
 ```
-
-</CodeBlock>
 
 <Callout>
 
@@ -118,8 +98,6 @@ Check out the [page on spiders](/docs/spiders#passing-options-to-middleware) to 
 ## Accessing Options
 
 To access configuration options inside our class, we can use `option()` method that comes with the `Configurable` trait.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -146,7 +124,5 @@ class MyConfigurableClass implements ConfigurableInterface
     }
 }
 ```
-
-</CodeBlock>
 
 The method accepts the name of the option and returns the configured value. 

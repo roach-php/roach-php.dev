@@ -12,8 +12,6 @@ It’s common that we want to test that a run for a specific spider was started 
 
 To do so, we may call the `Roach::fake()` method. This will instruct Roach to record which runs _would have been started_ without actually starting them.
 
-<CodeBlock>
-
 ```php
 use RoachPHP\Roach;
 
@@ -24,13 +22,9 @@ $runner = Roach::fake();
 Roach::startSpider(MySpider::class);
 ```
 
-</CodeBlock>
-
 The `Roach::fake()` method returns a `FakeRunner` that Roach will use internally instead of the real one. The `FakeRunner` allows us to make assertions about any runs that were or weren’t started.
 
 To restore the real runner, we can call the `Roach::restore()` method.
-
-<CodeBlock>
 
 ```php
 Roach::fake();
@@ -42,11 +36,7 @@ Roach::restore();
 Roach::startSpider(MySpider::class);
 ```
 
-</CodeBlock>
-
 It is a good idea to explicitly call `Roach::restore()` in the `tearDown` method of our test suite to avoid potential issues when running tests in parallel.
-
-<CodeBlock>
 
 ```php
 protected function setUp(): void
@@ -59,8 +49,6 @@ protected function tearDown(): void
     Roach::restore();
 }
 ```
-
-</CodeBlock>
 
 Note that `Roach::collectSpider()` will always return an empty array when in fake mode as no run actually gets started and as such no items will get scraped. Apart from that, it behaves exactly the same as `Roach::startSpider()` and all assertion mentioned below will work as expected for either method.
 
@@ -100,8 +88,6 @@ This assertion passes if at least one run for the provided spider class was reco
 
 We often want to check that a run was started with the correct overrides or context. To do so, we can pass an additional callback as the second parameter to the `assertRunWasStarted` method.
 
-<CodeBlock>
-
 ```php
 use RoachPHP\Spider\Configuration\Overrides;
 
@@ -113,20 +99,14 @@ $runner->assertRunWasStarted(
 );
 ```
 
-</CodeBlock>
-
 The callback gets passed the run’s `Overrides` (or `null`, if there weren’t any) as well as the run’s [context](/docs/spiders#passing-additional-context-to-spiders). The callback should return a boolean. If `false` is returned, the assertion fails.
 
 ### Asserting that a run was not started
 
 We can also assert that a run was _not_ started for a given spider. To do so, we can use the `assertRunNotStarted` method of the `FakeRunner`.
 
-<CodeBlock>
-
 ```php
 $runner->assertRunNotStarted(MySpider::class);
 ```
-
-</CodeBlock>
 
 This assertion passes if _no_ run was started for the `MySpider` spider.

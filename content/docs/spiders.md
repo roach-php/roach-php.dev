@@ -10,8 +10,6 @@ Spiders are classes which define how a website will get processed. This includes
 
 It's easiest to explain all the different parts of a spider by looking at an example. Here's a spider that extracts the title and subtitle of all pages of this very documentation.
 
-<CodeBlock>
-
 ```php
 <?php
 
@@ -43,8 +41,6 @@ class RoachDocsSpider extends BasicSpider
 }
 ```
 
-</CodeBlock>
-
 Here’s how this spider will be processed:
 
 1. Roach starts by sending requests to all URLs defined inside the `$startUrls` property of the spider. In our case, there’s only the single URL `https://roach-php.dev/docs/spiders`.
@@ -61,8 +57,6 @@ When Roach starts a run of your spider, it first generates the initial requests 
 ### Static URLs
 
 The most straight forward way of specifying the starting URLs for a spider is via the `$startUrls` property.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -84,8 +78,6 @@ class MySpider extends BasicSpider
 }
 ```
 
-</CodeBlock>
-
 Roach will send a request to each URL defined in this array and call the `parse` method for each respective response.
 
 ### Manually Creating the Request Objects
@@ -98,8 +90,6 @@ While using the `$startUrls` property is very convenient, it makes a few assumpt
 Since `$startUrls` is a property, we can only define static values in it. We can’t add dynamic parts to the URLs like the current date, for example.
 
 If we need complete control over the requests that get created, we can override the `initialRequests` method on the spider, instead.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -130,13 +120,9 @@ class MySpider extends BasicSpider
 }
 ```
 
-</CodeBlock>
-
 The `initialRequests` method needs to return an array of `Request` objects. Since we can now directly instantiate `Request` objects, we are free to configure these requests however we want. In the example above, we’re setting the start URL to a dynamic value based on the current date.
 
 The `Request` class has the following constructor:
-
-<CodeBlock>
 
 ```php
 Request::__construct(
@@ -147,13 +133,9 @@ Request::__construct(
 );
 ```
 
-</CodeBlock>
-
 The `$options` parameter takes an array of [Guzzle request options](https://docs.guzzlephp.org/en/latest/request-options.html) which allows us to configure the underlying Guzzle request directly, if that’s the flexibility we need.
 
 Using the `initialRequests` method, we could also provide a different parse method for the initial requests as well. 
-
-<CodeBlock>
 
 ```php
 <?php
@@ -201,8 +183,6 @@ class RoachDocsSpider extends BasicSpider
 }
 ```
 
-</CodeBlock>
-
 This pattern can be useful when we don’t know the URLs we want to crawl ahead of time. Think of a news site with the current stories on the front page. We could define the initial request of our spider to crawl the front page and extract the URLs to the actual stories from it. Then, we send requests to each of these pages to scrape them.
 
 What makes this so clean is that we’re able to define a different parsing method for both kinds of requests. The logic to extract URLs from the front page is completely different than scraping an actual article. Imagine having to do both of these things in a single method. It would be madness! Madness, I say!
@@ -222,8 +202,6 @@ Extensions, on the other hand don’t live in a specific context, but listen on 
 ### Defining Spider Configuration
 
 There is no definitive way to load a spider’s configuration. You might prefer defining all configuration in separate config files or leading it dynamically from the database. To help you get started, Roach provides a `BasicSpider` base class that you can extend from. This class allows you to provide your spider’s configuration as class properties.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -271,11 +249,7 @@ class MySpider extends BasicSpider
 }
 ```
 
-</CodeBlock>
-
 To register the `RequestDeduplicationMiddleware` that ships with Roach, we would add its fully qualified class-name (FQCN) to the `$downloaderMiddleware` array.
-
-<CodeBlock>
 
 ```php
 public array $downloaderMiddleware = [
@@ -283,13 +257,9 @@ public array $downloaderMiddleware = [
 ];
 ```
 
-</CodeBlock>
-
 ### Passing Options to Middleware
 
 Some middleware or extensions might allow you to pass options to them. For example, the built-in `UserAgentMiddleware` allows us to define a custom `userAgent` that will be attached to every request. In these cases, we use a slightly different syntax when registering the middleware.
-
-<CodeBlock>
 
 ```php
 public array $downloaderMiddleware = [
@@ -299,8 +269,6 @@ public array $downloaderMiddleware = [
     ]
 ];
 ```
-
-</CodeBlock>
 
 Instead of passing the FQCN of the middleware directly, we pass an array instead. The first entry of the array is the FQCN of the middleware. The second entry is an array of options that will be passed to the middleware. In the example above, we’re setting the `userAgent` option of the middleware to `Mozilla/5.0 (compatible; RoachPHP/0.1.0)`.
 
@@ -312,8 +280,6 @@ This process is identical for `$spiderMiddleware`, `$itemProcessors` and `$exten
 
 After we have set up our spider, it’s finally time to run it. Luckily, Roach makes this super easy. All we have to do is pass the class name of our spider to the static `Roach::startSpider()` method and Roach will take care of the rest.
 
-<CodeBlock>
-
 ```php
 <?php
     
@@ -323,25 +289,17 @@ use RoachPHP\Roach;
 Roach::startSpider(MySpider::class);
 ```
 
-</CodeBlock>
-
 ### Starting a Spider from the CLI
 
 To start a spider directly from the CLI, we can use the `roach:run` command and pass it the fully-qualified name of our spider.
-
-<CodeBlock>
 
 ```bash
 vendor/bin/roach roach:run App\\Spiders\\MySpider
 ```
 
-</CodeBlock>
-
 ### Retrieving Scraped Items After a Run
 
 The `startSpider` method does not have a return value. If we want to get back all items that were scraped during a run, we can use the `Roach::collectSpider()` method instead.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -352,8 +310,6 @@ use RoachPHP\Roach;
 // $items is an array<int, ItemInterface>
 $items = Roach::collectSpider(MySpider::class);
 ```
-
-</CodeBlock>
 
 The return value of this method is an array of all scraped items our spider emitting during the run. Note that for an item to be considered _scraped_, it needs to have passed through the spider’s [item pipeline](/item-pipeline) successfully without getting dropped.
 
@@ -367,8 +323,6 @@ Sometimes, it can be useful to override parts of a spider’s configuration only
 
 We can achieve this without changing the default spider configuration by passing an `Overrides` object as the second parameter to the `Roach::startSpider` method.
 
-<CodeBlock>
-
 ```php
 <?php
 
@@ -380,11 +334,7 @@ Roach::startSpider(
 );
 ```
 
-</CodeBlock>
-
 The `Overrides` object’s constructor accepts the configuration options that our spider class does.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -404,11 +354,7 @@ final class Overrides
 }
 ```
 
-</CodeBlock>
-
 Any overrides passed to `Roach::startSpider` will get merged with the spider’s default configuration before the run is started. If we don’t want to override certain options, we can either explicitly pass `null` to the constructor, or use name arguments to skip them entirely.
-
-<CodeBlock>
 
 ```php
 Roach::startSpider(
@@ -419,13 +365,9 @@ Roach::startSpider(
 );
 ```
 
-</CodeBlock>
-
 ### Passing Additional Context to Spiders
 
 In order to pass arbitrary data into our spider when starting the run, we can provide the optional `$context` parameter to either `Roach::startSpider` or `Roach::collectSpider`.
-
-<CodeBlock>
 
 ```php
 Roach::startSpider(
@@ -441,11 +383,7 @@ Roach::startSpider(
 );
 ```
 
-</CodeBlock>
-
 The `$context` array can contain arbitrary data and can be accessed via `$this->context` inside our spider.
-
-<CodeBlock>
 
 ```php
 // Pass context when starting a run
@@ -461,5 +399,3 @@ final class MySpider extends BasicSpider
     }
 }
 ```
-
-</CodeBlock>

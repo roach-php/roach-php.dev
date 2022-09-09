@@ -12,16 +12,12 @@ Check out the section on [configuring spiders](/docs/spiders#configuring-spiders
 
 An item processor is a PHP class which implements the `ItemProcessorInterface`. This interface defines only a single method that our processor has to implement.
 
-<CodeBlock>
-
 ```php
 interface ItemProcessorInterface extends ConfigurableInterface
 {
   	public function processItem(ItemInterface $item): ItemInterface;
 }
 ```
-
-</CodeBlock>
 
 So what are things that we can do with item processors? Here are a few suggestions to get you started.
 
@@ -38,8 +34,6 @@ Because of the plug-and-play nature of the item pipeline, we can create arbitrar
 
 You may have noticed that `ItemProcessorInterface` extends the `ConfigurableInterface`. All middleware, processors and extensions in Roach implement this interface.
 
-<CodeBlock>
-
 ```php
 interface ConfigurableInterface
 {
@@ -47,15 +41,11 @@ interface ConfigurableInterface
 }
 ```
 
-</CodeBlock>
-
 This interface allows us to pass configuration options to our processors to make them more, well, configurable. Not all processors will need that kind of flexibility, however, so being forced to implement this method every time seems like a bit of a chore.
 
 To alleviate some of the boilerplate, Roach comes with a `Configurable` trait we can use when writing our own processors. This trait provides the necessary methods to implement the `ConfigurableInterface` and allows us to define options  together with their default values via the `defaultOptions` method. This method defaults to an empty array, so there’s nothing for us to do if our processor is not providing any configuration options.
 
 Say we want to write a processor that filters out items based on a minimum value in a given field. We want to make the threshold configurable below which an item should be dropped. Here’s what that processor might look like.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -93,11 +83,7 @@ class MinimumScoredGoalsProcessor implements ItemProcessorInterface
 }
 ```
 
-</CodeBlock>
-
 To register this processor, we add it to the `$itemProcessors` property of our spider and specify the minimum goal threshold we want to use.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -118,11 +104,7 @@ class MySpider extends BasicSpider
 }
 ```
 
-</CodeBlock>
-
 If we were to simply register the processor without specifying any options, it would use the default values instead.
-
-<CodeBlock>
 
 ```php
 public array $itemProcessors = [
@@ -132,13 +114,9 @@ public array $itemProcessors = [
 ];
 ```
 
-</CodeBlock>
-
 ### Dropping Items
 
 We can stop an item from being processed further by calling the `drop()` method on the item.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -162,11 +140,7 @@ class ValidateMatchProcessor implements ItemProcessorInterface
 }
 ```
 
-</CodeBlock>
-
 The `drop` method takes a string as argument describing the reason the item was dropped. We can check if an item has been dropped by calling the `wasDropped` method on the item. To get the reason, we can use the `getDropReason` method.
-
-<CodeBlock>
 
 ```php
 $item->wasDropped();
@@ -181,15 +155,11 @@ $item->getDropReason();
 // => "Bad breath"
 ```
 
-</CodeBlock>
-
 Roach will fire an `ItemDropped` event after an item was dropped. [Extensions](/docs/extensions) may subscribe to this event to react to items being dropped. For instance, Roach comes with a `LoggerExtensions` which will log whenever an item was dropped and why.
 
 ### Dependency Injection
 
 Roach uses a [dependency injection container](/docs/dependency-injection) behind the scenes to resolve all middleware, processors and extensions. As such, we can typehint any dependency our processor needs in the constructor and have Roach attempt to autowire it for us.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -216,5 +186,3 @@ class SaveMatchToDatabaseProcessor implements ItemProcessorInterface
     }
 }
 ```
-
-</CodeBlock>

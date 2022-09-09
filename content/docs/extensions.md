@@ -10,8 +10,6 @@ Extensions provide a way to extend Roach by hooking into the various events bein
 
 An extension is a class which implements `ExtensionInterface`. This interface itself is a composition of Symfony’s `EventSubscriberInterface` and Roach’s `ConfigurableInterface`.
 
-<CodeBlock>
-
 ```php
 interface ExtensionInterface extends ConfigurableInterface, EventSubscriberInterface
 {
@@ -19,11 +17,7 @@ interface ExtensionInterface extends ConfigurableInterface, EventSubscriberInter
 
 ```
 
-</CodeBlock>
-
 We can see that all extensions are, are glorified event listeners. Every extension needs to provide a list of [events](/docs/extensions#events) it wants to listen on along with the event handler to be called when the event fires.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -53,8 +47,6 @@ class EmailDigestExtension implements ExtensionInterface
 }
 ```
 
-</CodeBlock>
-
 Roach uses Symfony’s [`EventDispatcher`](https://symfony.com/doc/current/components/event_dispatcher.html) component under hood, so check out its [documentation about event subscribers](https://symfony.com/doc/current/components/event_dispatcher.html#using-event-subscribers) for a more thorough explanation.
 
 ### Defining Configuration Options
@@ -78,8 +70,6 @@ By default, the extensions logs to `stdout`. To change this, we can pass a diffe
 
 To use this extension, add it to your spider’s `$extension` array.
 
-<CodeBlock>
-
 ```php
 <?php
     
@@ -94,8 +84,6 @@ class MySpider extends BasicSpider
 }
 ```
 
-</CodeBlock>
-
 This extension takes no configuration options.
 
 ### Collecting Run Statistics
@@ -105,8 +93,6 @@ The `StatsCollectorExtension` gathers statistics about our run, such as the tota
 After a run finishes, the extensions logs these statistics using its `Psr\Log\LoggerInterface` dependency. By default, this will log to `stdout` but can be configured by providing a different implementation of the logger interface. Check the section on [dependency injection](/docs/dependency-injection) to see learn how we can swap out Roach’s default DI container.
 
 To use this extension, add it to your spider’s `$extension` array.
-
-<CodeBlock>
 
 ```php
 <?php
@@ -121,8 +107,6 @@ class MySpider extends BasicSpider
     ];
 }
 ```
-
-</CodeBlock>
 
 This extension takes no configuration options.
 

@@ -133,7 +133,7 @@ public function parse(Response $response): \Generator
     $links = $response->filter('nav a')->links();
 
     foreach ($links as $link) {
-        yield $this->request('GET', $link->getUrl());
+        yield $this->request('GET', $link->getUri());
     }
 }
 ```

@@ -17,7 +17,7 @@ interface ExtensionInterface extends ConfigurableInterface, EventSubscriberInter
 
 ```
 
-We can see that all extensions are, are glorified event listeners. Every extension needs to provide a list of [events](/docs/extensions#events) it wants to listen on along with the event handler to be called when the event fires.
+We can see that all extensions are glorified event listeners. Every extension needs to provide a list of [events](/docs/extensions#events) it wants to listen on along with the event handler to be called when the event fires.
 
 ```php
 <?php

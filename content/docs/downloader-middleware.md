@@ -65,6 +65,30 @@ class MyRequestMiddleware implements RequestMiddlewareInterface
 
 Dropping a request prevents any further downloader middleware from running and the request will not get send. It will also fire a [`RequestDropped`](/docs/extensions#requestdropped) event which you can subscribe to in an [extension](/docs/extensions).
 
+#### Short-Circuiting a Request
+
+Sometimes you may want to simply set the response of a request without the
+request actually getting sent, i.e. in a caching middleware. In this case you
+may use the `Request::withResponse()` method inside you middleware.
+
+```php
+class CachingMiddleware implements RequestMiddlewareInterface
+{
+    use Configurable;
+
+    public function handleRequest(Request $request): Request
+    {
+        return $request->withResponse(
+            $this->cache->forRequest($request)
+        );
+    }
+}
+```
+
+All request and response middleware will still get run for this request. 
+However, the request will not actually get sent and will instead immediately be
+sent through the processing pipeline. All events still get fired as usual.
+
 #### Defining Configuration Options
 
 Check out the dedicated page about [configuring middleware and extensions](/docs/configuring-middleware-and-extensions) to learn how to define configuration options for our middleware.
@@ -193,3 +217,97 @@ Most of the middleware’s configuration options will configure the underlying B
 | `nodeBinary`        | `null`  | Custom path to the `node` executable. Corresponds to [`Browsershot::setNodeBinary`](https://github.com/spatie/browsershot#custom-node-and-npm-binaries). |
 | `npmBinary`         | `null`  | Custom path to the `npm` executable. Corresponds to [`Browsershot::setNpmBinary`](https://github.com/spatie/browsershot#custom-node-and-npm-binaries). |
 
+### Proxy Middleware
+
+The `ProxyMiddleware` allows you to configure HTTP proxies that Roach will use
+when crawling specific hosts. Under the hood, this will configure the
+[`proxy`](https://docs.guzzlephp.org/en/stable/request-options.html#proxy)
+option on the underlying Guzzle request, so see their documentation for a more
+detailed description of the parameters.
+
+#### Configuration Options
+
+| Name      | Default | Description                                       |
+| --------- | ------- | ------------------------------------------------- |
+| `loader`  | `null`  | The class that is used to load the proxy configuration. By default, this will load the configuration from the array specified in the `proxy` option. You can implement your own configuration loader by implementing the `ConfigurationLoaderInterface`, e.g. to load the proxy configurations from a database. |
+| `proxy`   | `[]`    | A string or dictionary of hosts and proxy options (see [Proxy Options](#proxy-options). If a string is provided, the same proxy settings are used for every host. Otherwise, the downloader will check if a proxy was configured for the host of the current request. If no proxy settings exist for the host and no wildcard proxy was configured, the request will be sent without using a proxy. |
+
+#### Proxy Options
+
+Proxy options simply get passed through to the underlying Guzzle request. See
+the [`Guzzle documentation`](https://docs.guzzlephp.org/en/stable/request-options.html#proxy)
+for more detailed information.
+
+```php
+use RoachPHP\Downloader\ProxyMiddleware;
+
+class MySpider extends BasicSpider
+{
+    public array $downloaderMiddleware = [
+        [ProxyMiddleware::class, [
+            'proxy' => [
+                'example.com' => [
+                    'http' => 'http://localhost:8125', // Use this proxy with "http"
+                    'https' => 'http://localhost:9124', // Use this proxy with "https"
+                    'no' => ['.mit.edu'], // Don't use a proxy with these
+                ],
+            ],
+        ]],
+    ];
+}
+```
+
+If the `proxy` option is set to a string, the same proxy URL will be used for
+all hosts and protocols. 
+
+So this
+
+```php
+public array $downloaderMiddleware = [
+  [ProxyMiddleware::class, ['proxy' => 'http://localhost:8125']],
+];
+```
+
+is equivalent to this.
+
+```php
+public array $downloaderMiddleware = [
+  [ProxyMiddleware::class, [
+      'proxy' => [
+         '*' => [
+            'http' => 'http://localhost:8125',
+            'https' => 'http://localhost:8125',
+            'no' => [],
+         ],
+      ],
+  ]],
+];
+```
+
+This also works on a per-host basis. This
+
+```php
+public array $downloaderMiddleware = [
+  [ProxyMiddleware::class, [
+      'proxy' => [
+         'example.com' => 'http://localhost:8125',
+      ],
+  ]],
+];
+```
+
+is equivalent to this.
+
+```php
+public array $downloaderMiddleware = [
+  [ProxyMiddleware::class, [
+      'proxy' => [
+         'example.com' => [
+            'http' => 'http://localhost:8125',
+            'https' => 'http://localhost:8125',
+            'no' => [],
+         ]
+      ],
+  ]],
+];
+```

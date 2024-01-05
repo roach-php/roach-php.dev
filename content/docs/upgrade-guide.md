@@ -4,6 +4,57 @@ section: Getting Started
 subtitle: Steps to take to upgrade your application to a newer version of Roach.
 ---
 
+## Migrating to 3.0.0 from 2.x
+
+### Runs Are Now Namespaced
+
+**Likelihood of Impact: Low**
+
+A new method `setNamespace` was added to the `RequestSchedulerInterface`.
+
+```diff
+interface RequestSchedulerInterface
+{
+    // ...
+
++   public function setNamespace(string $namespace): self;
+}
+```
+
+If you have implemented your own request scheduler, you need to implement this
+method yourself.
+
+Additionally, the `Run` class now takes an additional `$namespace` parameter in 
+its constructor.
+
+```diff
+final class Run
+{
+    public function __construct(
+        public array $startRequests,
++       public string $namespace,
+        public array $downloaderMiddleware = [],
+        public array $itemProcessors = [],
+        public array $responseMiddleware = [],
+        public array $extensions = [],
+        public int $concurrency = 25,
+        public int $requestDelay = 0,
+    ) {
+    }
+}
+```
+
+It's very unlikely that your application needs to interact with the `Run` class 
+directly, so this change likely will not affect your application or spiders.
+
+## Migrating to 2.0.0 from 1.x
+
+### Required PHP Version
+
+**Likelihood of Impact: High**
+
+Roach now requires PHP 8.1 or 8.2.
+
 ## Migrating to 1.0.0 from 0.x
 
 ### Required Symfony Version

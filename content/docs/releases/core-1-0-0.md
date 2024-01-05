@@ -4,7 +4,7 @@ section: Releases
 subtitle: Released on April 19, 2022
 ---
 
-**Note:** The 1.0.0 release contains some breaking changes. Please read the [upgrade guide ](/upgrade-guide) on how to upgrade your application to this version.
+**Note:** The 1.0.0 release contains some breaking changes. Please read the [upgrade guide](/docs/upgrade-guide) on how to upgrade your application to this version.
 
 - Added `Roach::collectSpider` method to start a spider run and return all scraped items.
 - Added `array $context` parameter to `Roach::startSpider` and `Roach::collectSpider` to pass arbitrary

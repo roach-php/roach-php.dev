@@ -196,3 +196,21 @@ Fired whenever an item was dropped by one of the [item processors](/docs/item-pi
 | -------- | ---------------------------- |
 | `item`   | The dropped `ItemInterface`. |
 
+### `ResponseReceiving`
+
+Fired when the response of a request was received but before it is sent through
+the response middleware.
+
+| Property   | Description            |
+| ---------- | ---------------------- |
+| `response` | The `Response` object. |
+
+### `ResponseReceived`
+
+Fired after a response was sent through the response middleware without getting
+dropped.
+
+| Property   | Description            |
+| ---------- | ---------------------- |
+| `response` | The `Response` object. |
+

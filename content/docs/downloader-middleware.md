@@ -8,7 +8,7 @@ Downloader middleware sits between the Roach engine and the **Downloader**. The 
 
 ## Writing Middleware
 
-Downloader middleware are classes which implement `DownloaderMiddlewareInterface`. 
+Downloader middleware are classes which implement `DownloaderMiddlewareInterface`.
 
 ```php
 interface DownloaderMiddlewareInterface extends
@@ -53,7 +53,7 @@ use RoachPHP\Support\Configurable;
 class MyRequestMiddleware implements RequestMiddlewareInterface
 {
     use Configurable;
-    
+
     public function handleRequest(Request $request): Request
     {
         // Make sure to provide a useful reason for this
@@ -85,7 +85,7 @@ class CachingMiddleware implements RequestMiddlewareInterface
 }
 ```
 
-All request and response middleware will still get run for this request. 
+All request and response middleware will still get run for this request.
 However, the request will not actually get sent and will instead immediately be
 sent through the processing pipeline. All events still get fired as usual.
 
@@ -122,7 +122,7 @@ use RoachPHP\Support\Configurable;
 class MyResponseMiddleware implements ResponseMiddlewareInterface
 {
     use Configurable;
-    
+
     public function handleResponse(Response $response): Response
     {
         return $response->drop('Responses only get processed during working hours');
@@ -149,6 +149,20 @@ Check out the dedicated page about [configuring middleware and extensions](/docs
 
 Roach ships with various built-in downloader middleware for common tasks when dealing with HTTP requests and responses.
 
+### Handling HTTP Errors
+
+The built-in `RoachPHP\Downloader\Middleware\HttpErrorMiddleware` automatically
+drops requests with a non-successful HTTP status. According to the HTTP standard,
+responses with a status in the 200-300 range are considered successful.
+
+This middleware is enabled by default if your spider extends from `BasicSpider`.
+
+### Configuration Options
+
+| Name           | Default | Description                                                                                                                                                                               |
+| -------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `handleStatus` | `[]`    | A list of HTTP statuses outside the 200-300 range that should be handled by your spider. For instance, setting this option to `[404]` would allow your spider to process `404` responses. |
+
 ### Setting the User-Agent Header
 
 In order to attach the same `User-Agent` header to every outgoing request, we can use the `RoachPHP\Downloader\Middleware\UserAgentMiddleware` middleware.
@@ -165,10 +179,10 @@ To avoid sending duplicate requests, we can register the `RoachPHP\Downloader\Mi
 
 #### Configuration Options
 
-| Name                      | Default | Description                                                  |
-| ------------------------- | ------- | ------------------------------------------------------------ |
-| `ignore_url_fragments`    | `false` | Whether or not URL fragments should be ignored when comparing URLs. If set to `false`,  `https://url.com/foo#bar` will be considered a duplicate of `https://url.com/foo`. |
-| `ignore_trailing_slashes` | `true`  | Whether or not trailing slashes should be ignored when comparing URLs. |
+| Name                      | Default | Description                                                                                                                                                                                                                                                        |
+| ------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ignore_url_fragments`    | `false` | Whether or not URL fragments should be ignored when comparing URLs. If set to `false`, `https://url.com/foo#bar` will be considered a duplicate of `https://url.com/foo`.                                                                                          |
+| `ignore_trailing_slashes` | `true`  | Whether or not trailing slashes should be ignored when comparing URLs.                                                                                                                                                                                             |
 | `ignore_query_string`     | `false` | Whether or not the query string should be ignored when comparing URLs. When set to `true` it will completely ignore the query string, so it will consider two URLs to be identical if they contain all the same key-value pairs in the query, regardless of order. |
 
 Using this middleware is recommended for most use-cases as it allows you to write your spider in a very naive way without having to worry about bombarding the server with duplicate requests.
@@ -187,7 +201,7 @@ Since this middleware uses [`spatie/robots-txt`](https://github.com/spatie/robot
 
 ### Executing Javascript
 
-Many sites don’t directly return the final HTML but depend on some Javascript being run first. To deal with this, Roach includes a `RoachPHP\Downloader\Middleware\ExecuteJavascriptMiddleware`  we can use in our spider.
+Many sites don’t directly return the final HTML but depend on some Javascript being run first. To deal with this, Roach includes a `RoachPHP\Downloader\Middleware\ExecuteJavascriptMiddleware` we can use in our spider.
 
 This middleware will intercept every response and swap out its body with the body returned after executing Javascript. This means that in our spider, we don’t have to care about whether or not Javascript needed to be run or not. We can simply writing our scraper as if we’re dealing with static HTML.
 
@@ -207,15 +221,15 @@ Check out the [requirements](https://spatie.be/docs/browsershot/v2/requirements)
 
 Most of the middleware’s configuration options will configure the underlying Browsershot instance. Check out the [Browsershot documentation](https://github.com/spatie/browsershot#custom-node-and-npm-binaries) for a more complete description of what each of the configuration values do.
 
-| Name                | Default | Description                                                  |
-| ------------------- | ------- | ------------------------------------------------------------ |
-| `chromiumArguments` | `[]`    | Custom arguments which will get passed to Chromium. Corresponds to [`Browsershot::addChromiumArguments`](https://github.com/spatie/browsershot#pass-custom-arguments-to-chromium). |
-| `chromePath`        | `null`  | Custom path to a Chrome or Chromium executable. Will default to the executable installed by Puppeteer. Corresponds to [`Browsershot::setCromePath`](https://github.com/spatie/browsershot#custom-chromechromium-executable-path). |
-| `binPath`           | `null`  | Custom script path which get executed instead of Browsershot’s default script. Corresponds to [`Browsershot::setBinPath`](https://github.com/spatie/browsershot#custom-binary-path). |
-| `nodeModulePath`    | `null`  | Path to an alternative `node_modules` folder to use. Corresponds to [`Browsershot::setNodeModulePath`](https://github.com/spatie/browsershot#custom-node-module-path). |
+| Name                | Default | Description                                                                                                                                                                                                                                                                    |
+| ------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `chromiumArguments` | `[]`    | Custom arguments which will get passed to Chromium. Corresponds to [`Browsershot::addChromiumArguments`](https://github.com/spatie/browsershot#pass-custom-arguments-to-chromium).                                                                                             |
+| `chromePath`        | `null`  | Custom path to a Chrome or Chromium executable. Will default to the executable installed by Puppeteer. Corresponds to [`Browsershot::setCromePath`](https://github.com/spatie/browsershot#custom-chromechromium-executable-path).                                              |
+| `binPath`           | `null`  | Custom script path which get executed instead of Browsershot’s default script. Corresponds to [`Browsershot::setBinPath`](https://github.com/spatie/browsershot#custom-binary-path).                                                                                           |
+| `nodeModulePath`    | `null`  | Path to an alternative `node_modules` folder to use. Corresponds to [`Browsershot::setNodeModulePath`](https://github.com/spatie/browsershot#custom-node-module-path).                                                                                                         |
 | `includePath`       | `null`  | Overrides the `PATH` environment variable Browsershot uses to find executables. This is an alternative to specifying paths to the various executables individually. Corresponds to [`Browsershot::setIncludePath`](https://github.com/spatie/browsershot#custom-include-path). |
-| `nodeBinary`        | `null`  | Custom path to the `node` executable. Corresponds to [`Browsershot::setNodeBinary`](https://github.com/spatie/browsershot#custom-node-and-npm-binaries). |
-| `npmBinary`         | `null`  | Custom path to the `npm` executable. Corresponds to [`Browsershot::setNpmBinary`](https://github.com/spatie/browsershot#custom-node-and-npm-binaries). |
+| `nodeBinary`        | `null`  | Custom path to the `node` executable. Corresponds to [`Browsershot::setNodeBinary`](https://github.com/spatie/browsershot#custom-node-and-npm-binaries).                                                                                                                       |
+| `npmBinary`         | `null`  | Custom path to the `npm` executable. Corresponds to [`Browsershot::setNpmBinary`](https://github.com/spatie/browsershot#custom-node-and-npm-binaries).                                                                                                                         |
 
 ### Proxy Middleware
 
@@ -227,10 +241,10 @@ detailed description of the parameters.
 
 #### Configuration Options
 
-| Name      | Default | Description                                       |
-| --------- | ------- | ------------------------------------------------- |
-| `loader`  | `null`  | The class that is used to load the proxy configuration. By default, this will load the configuration from the array specified in the `proxy` option. You can implement your own configuration loader by implementing the `ConfigurationLoaderInterface`, e.g. to load the proxy configurations from a database. |
-| `proxy`   | `[]`    | A string or dictionary of hosts and proxy options (see [Proxy Options](#proxy-options). If a string is provided, the same proxy settings are used for every host. Otherwise, the downloader will check if a proxy was configured for the host of the current request. If no proxy settings exist for the host and no wildcard proxy was configured, the request will be sent without using a proxy. |
+| Name     | Default | Description                                                                                                                                                                                                                                                                                                                                                                                         |
+| -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `loader` | `null`  | The class that is used to load the proxy configuration. By default, this will load the configuration from the array specified in the `proxy` option. You can implement your own configuration loader by implementing the `ConfigurationLoaderInterface`, e.g. to load the proxy configurations from a database.                                                                                     |
+| `proxy`  | `[]`    | A string or dictionary of hosts and proxy options (see [Proxy Options](#proxy-options). If a string is provided, the same proxy settings are used for every host. Otherwise, the downloader will check if a proxy was configured for the host of the current request. If no proxy settings exist for the host and no wildcard proxy was configured, the request will be sent without using a proxy. |
 
 #### Proxy Options
 
@@ -258,7 +272,7 @@ class MySpider extends BasicSpider
 ```
 
 If the `proxy` option is set to a string, the same proxy URL will be used for
-all hosts and protocols. 
+all hosts and protocols.
 
 So this
 
